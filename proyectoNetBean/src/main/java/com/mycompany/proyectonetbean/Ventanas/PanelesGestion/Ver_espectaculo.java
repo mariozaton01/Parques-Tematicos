@@ -4,6 +4,12 @@
  */
 package com.mycompany.proyectonetbean.Ventanas.PanelesGestion;
 
+import com.mycompany.proyectonetbean.Clases.Espectaculo;
+import com.mycompany.proyectonetbean.ProyectoNetBean;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 /**
  *
  * @author mario
@@ -15,6 +21,8 @@ public class Ver_espectaculo extends javax.swing.JPanel {
      */
     public Ver_espectaculo() {
         initComponents();
+        ProyectoNetBean.getEspectaculostoComboBox(cb_espectaculos);
+
     }
 
     /**
@@ -29,7 +37,6 @@ public class Ver_espectaculo extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         cb_espectaculos = new javax.swing.JComboBox<>();
-        tf_desc = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         t_lugar = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
@@ -41,6 +48,8 @@ public class Ver_espectaculo extends javax.swing.JPanel {
         jLabel7 = new javax.swing.JLabel();
         b_guardar = new javax.swing.JButton();
         b_udpate_espec = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        ta_desc = new javax.swing.JTextArea();
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Ver espectaculos");
@@ -48,8 +57,15 @@ public class Ver_espectaculo extends javax.swing.JPanel {
         jLabel2.setText("Selecciona un espectaculo:");
 
         cb_espectaculos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        tf_desc.setEnabled(false);
+        cb_espectaculos.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                try {
+                    cb_espectaculosItemStateChanged(evt);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
 
         jLabel5.setText("Lugar:");
 
@@ -90,6 +106,10 @@ public class Ver_espectaculo extends javax.swing.JPanel {
             }
         });
 
+        ta_desc.setColumns(20);
+        ta_desc.setRows(5);
+        jScrollPane1.setViewportView(ta_desc);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -111,18 +131,20 @@ public class Ver_espectaculo extends javax.swing.JPanel {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel3)
                                     .addComponent(jLabel4)
-                                    .addComponent(jLabel7)
                                     .addComponent(jLabel5)
                                     .addComponent(jLabel6))
-                                .addGap(30, 30, 30)
+                                .addGap(48, 48, 48)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(n_coste, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(t_name)
                                         .addComponent(n_aforo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(tf_desc)
                                         .addComponent(t_lugar, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addComponent(b_guardar, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(b_guardar, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addGap(30, 30, 30)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(373, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -147,11 +169,14 @@ public class Ver_espectaculo extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(n_aforo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(tf_desc, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(48, 48, 48)
+                .addGap(33, 33, 33)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(jLabel7)
+                        .addGap(68, 68, 68))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(t_lugar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -159,7 +184,7 @@ public class Ver_espectaculo extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(n_coste, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
                 .addComponent(b_guardar, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(41, 41, 41))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -174,7 +199,7 @@ public class Ver_espectaculo extends javax.swing.JPanel {
         // TODO add your handling code here:
         t_name.setEnabled(true);
         n_aforo.setEnabled(true);
-        tf_desc.setEnabled(true);
+        ta_desc.setEnabled(true);
         t_lugar.setEnabled(true);
         n_coste.setEnabled(true);
         b_udpate_espec.setEnabled(true);
@@ -183,6 +208,28 @@ public class Ver_espectaculo extends javax.swing.JPanel {
     private void b_udpate_especActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_udpate_especActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_b_udpate_especActionPerformed
+
+    private void cb_espectaculosItemStateChanged(java.awt.event.ItemEvent evt) throws SQLException {//GEN-FIRST:event_cb_espectaculosItemStateChanged
+        // TODO add your handling code here:
+        String selectedValue = cb_espectaculos.getSelectedItem().toString();
+        String id = selectedValue.split("-")[0];
+        Espectaculo espectaculo = null;
+        espectaculo = ProyectoNetBean.getEspectaculoByID(id);
+
+        t_name.setEnabled(false);
+        n_aforo.setEnabled(false);
+        ta_desc.setEnabled(false);
+        t_lugar.setEnabled(false);
+        n_coste.setEnabled(false);
+        b_udpate_espec.setEnabled(false);
+
+        t_name.setText( espectaculo.getNombre());
+        t_lugar.setText( espectaculo.getLugar());
+        ta_desc.setText( espectaculo.getDescripcion());
+        n_aforo.setValue( espectaculo.getAforo());
+        n_coste.setValue( espectaculo.getCoste());
+
+    }//GEN-LAST:event_cb_espectaculosItemStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -196,10 +243,11 @@ public class Ver_espectaculo extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSpinner n_aforo;
     private javax.swing.JSpinner n_coste;
     private javax.swing.JTextField t_lugar;
     private javax.swing.JTextField t_name;
-    private javax.swing.JTextField tf_desc;
+    private javax.swing.JTextArea ta_desc;
     // End of variables declaration//GEN-END:variables
 }

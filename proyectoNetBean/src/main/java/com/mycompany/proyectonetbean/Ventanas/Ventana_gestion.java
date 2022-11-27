@@ -43,6 +43,7 @@ public class Ventana_gestion extends javax.swing.JFrame {
         m_cliente_anadir = new javax.swing.JMenuItem();
         m_cliente_borrar = new javax.swing.JMenuItem();
         m_empleado = new javax.swing.JMenu();
+        ver_empleados = new javax.swing.JMenuItem();
         m_emple_anadir = new javax.swing.JMenuItem();
         m_emple_borrar = new javax.swing.JMenuItem();
 
@@ -106,6 +107,11 @@ public class Ventana_gestion extends javax.swing.JFrame {
         jMenu2.add(m_cliente_ver);
 
         m_cliente_anadir.setText("Añadir");
+        m_cliente_anadir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                m_cliente_anadirActionPerformed(evt);
+            }
+        });
         jMenu2.add(m_cliente_anadir);
 
         m_cliente_borrar.setText("Borrar");
@@ -119,6 +125,14 @@ public class Ventana_gestion extends javax.swing.JFrame {
         jMenuBar1.add(jMenu2);
 
         m_empleado.setText("Empleados");
+
+        ver_empleados.setText("Visualizar");
+        ver_empleados.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ver_empleadosActionPerformed(evt);
+            }
+        });
+        m_empleado.add(ver_empleados);
 
         m_emple_anadir.setText("Añadir");
         m_empleado.add(m_emple_anadir);
@@ -155,6 +169,13 @@ public class Ventana_gestion extends javax.swing.JFrame {
 
     private void m_cliente_borrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_cliente_borrarActionPerformed
         // TODO add your handling code here:
+        Borrar_cliente borrar_cliente = new Borrar_cliente();
+        borrar_cliente.setSize(1071,585);
+        borrar_cliente.setLocation(0,0);
+        desktop.removeAll();
+        desktop.add(borrar_cliente,BorderLayout.CENTER);
+        desktop.revalidate();
+        desktop.repaint();
     }//GEN-LAST:event_m_cliente_borrarActionPerformed
 
     private void m_espec_anadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_espec_anadirActionPerformed
@@ -200,6 +221,28 @@ public class Ventana_gestion extends javax.swing.JFrame {
         desktop.repaint();
         
     }//GEN-LAST:event_m_cliente_verActionPerformed
+
+    private void m_cliente_anadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_cliente_anadirActionPerformed
+        // TODO add your handling code here:
+        Anadir_cliente anadir_cliente = new Anadir_cliente();
+        anadir_cliente.setSize(1071,585);
+        anadir_cliente.setLocation(0,0);
+        desktop.removeAll();
+        desktop.add(anadir_cliente,BorderLayout.CENTER);
+        desktop.revalidate();
+        desktop.repaint();
+    }//GEN-LAST:event_m_cliente_anadirActionPerformed
+
+    private void ver_empleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ver_empleadosActionPerformed
+        // TODO add your handling code here:
+        Ver_empleado ver_mepleado = new Ver_empleado();
+        ver_mepleado.setSize(1071,585);
+        ver_mepleado.setLocation(0,0);
+        desktop.removeAll();
+        desktop.add(ver_mepleado,BorderLayout.CENTER);
+        desktop.revalidate();
+        desktop.repaint();
+    }//GEN-LAST:event_ver_empleadosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -263,5 +306,6 @@ public class Ventana_gestion extends javax.swing.JFrame {
     private javax.swing.JMenuItem m_espec_borrar;
     private javax.swing.JMenuItem m_espec_disponibles;
     private javax.swing.JMenu menu_Espectaculos;
+    private javax.swing.JMenuItem ver_empleados;
     // End of variables declaration//GEN-END:variables
 }

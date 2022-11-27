@@ -4,6 +4,8 @@
  */
 package com.mycompany.proyectonetbean.Ventanas.PanelesGestion;
 
+import com.mycompany.proyectonetbean.ProyectoNetBean;
+
 /**
  *
  * @author mario
@@ -15,6 +17,8 @@ public class Borrar_espectaculo extends javax.swing.JPanel {
      */
     public Borrar_espectaculo() {
         initComponents();
+        ProyectoNetBean.getEspectaculostoComboBox(cb_espectaculos);
+
     }
 
     /**
@@ -84,6 +88,11 @@ public class Borrar_espectaculo extends javax.swing.JPanel {
 
     private void b_borrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_borrarActionPerformed
         // TODO add your handling code here:
+        String selectedValue = cb_espectaculos.getSelectedItem().toString();
+        String id = selectedValue.split("-")[0];
+
+        ProyectoNetBean.deleteEspectaculo(id);
+
     }//GEN-LAST:event_b_borrarActionPerformed
 
 

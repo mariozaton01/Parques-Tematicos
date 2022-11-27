@@ -4,7 +4,12 @@
  */
 package com.mycompany.proyectonetbean.Ventanas.PanelesGestion;
 
+import com.mycompany.proyectonetbean.Clases.Espectaculo;
 import com.mycompany.proyectonetbean.ProyectoNetBean;
+
+import javax.swing.*;
+import javax.swing.border.LineBorder;
+import java.awt.*;
 
 /**
  *
@@ -34,12 +39,13 @@ public class Anadir_espectaculo extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         n_aforo = new javax.swing.JSpinner();
         jLabel4 = new javax.swing.JLabel();
-        tf_desc = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         t_lugar = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         n_coste = new javax.swing.JSpinner();
         b_guardar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        ta_desc = new javax.swing.JTextArea();
 
         setPreferredSize(new java.awt.Dimension(1072, 717));
 
@@ -48,19 +54,46 @@ public class Anadir_espectaculo extends javax.swing.JPanel {
 
         jLabel2.setText("Nombre:");
 
+        t_name.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                t_nameFocusGained(evt);
+            }
+        });
+        t_name.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                t_nameActionPerformed(evt);
+            }
+        });
+
         jLabel3.setText("Aforo:");
 
         n_aforo.setMinimumSize(new java.awt.Dimension(124, 22));
         n_aforo.setPreferredSize(new java.awt.Dimension(85, 22));
+        n_aforo.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                n_aforoFocusGained(evt);
+            }
+        });
 
         jLabel4.setText("Descripcion:");
 
         jLabel5.setText("Lugar:");
 
+        t_lugar.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                t_lugarFocusGained(evt);
+            }
+        });
+
         jLabel6.setText("Coste:");
 
         n_coste.setMinimumSize(new java.awt.Dimension(124, 22));
         n_coste.setPreferredSize(new java.awt.Dimension(85, 22));
+        n_coste.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                n_costeFocusGained(evt);
+            }
+        });
 
         b_guardar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         b_guardar.setText("Guardar");
@@ -70,36 +103,49 @@ public class Anadir_espectaculo extends javax.swing.JPanel {
             }
         });
 
+        ta_desc.setColumns(20);
+        ta_desc.setRows(5);
+        ta_desc.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                ta_descFocusGained(evt);
+            }
+        });
+        jScrollPane1.setViewportView(ta_desc);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap(377, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(71, 71, 71)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel2)
-                                .addComponent(jLabel3)
-                                .addComponent(jLabel4)
-                                .addComponent(jLabel5)
-                                .addComponent(jLabel6))
-                            .addGap(30, 30, 30)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(n_coste, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(t_name)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel6))
+                                .addGap(30, 30, 30)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(n_coste, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(t_lugar, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(71, 71, 71)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel4))
+                                .addGap(30, 30, 30)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(t_name, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(n_aforo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(tf_desc)
-                                    .addComponent(t_lugar, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(363, 363, 363))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(b_guardar, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(101, 101, 101)))
-                .addGap(363, 363, 363))
+                        .addGap(462, 462, 462))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -114,11 +160,11 @@ public class Anadir_espectaculo extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(n_aforo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGap(73, 73, 73)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
-                    .addComponent(tf_desc, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(48, 48, 48)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(t_lugar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -126,15 +172,74 @@ public class Anadir_espectaculo extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(n_coste, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(69, 69, 69)
+                .addGap(18, 18, 18)
                 .addComponent(b_guardar, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(139, Short.MAX_VALUE))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void b_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_guardarActionPerformed
         // TODO add your handling code here:
+        int cont = 0;
+        if(t_name.getText().isEmpty() ){
+            cont++;
+            t_name.setBorder(new LineBorder(Color.red,1));
+        }
+        if(t_lugar.getText().isEmpty() ){
+            cont++;
+            t_lugar.setBorder(new LineBorder(Color.red,1));
+        }
+        if(ta_desc.getText().isEmpty() ){
+            cont++;
+            ta_desc.setBorder(new LineBorder(Color.red,1));
+        }
+        if (n_aforo.getValue().toString().equals("0")){
+            cont++;
+            n_aforo.setBorder(new LineBorder(Color.red,1));
+        }
+        if (cont == 0){
+            Espectaculo espectaculo = new Espectaculo(t_name.getText(),Integer.parseInt(n_aforo.getValue().toString()),ta_desc.getText(),t_lugar.getText(),Integer.parseInt(n_coste.getValue().toString()));
+            ProyectoNetBean.insertEspectaculo(espectaculo);
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "No dejes campos vacios");
+
+        }
     }//GEN-LAST:event_b_guardarActionPerformed
+
+    private void t_nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_nameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_t_nameActionPerformed
+
+    private void t_nameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_t_nameFocusGained
+        // TODO add your handling code here:
+        t_name.setBorder(new LineBorder(Color.black,1));
+
+    }//GEN-LAST:event_t_nameFocusGained
+
+    private void n_aforoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_n_aforoFocusGained
+        // TODO add your handling code here:
+        n_aforo.setBorder(new LineBorder(Color.black,1));
+
+    }//GEN-LAST:event_n_aforoFocusGained
+
+    private void ta_descFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ta_descFocusGained
+        // TODO add your handling code here:
+        ta_desc.setBorder(new LineBorder(Color.black,1));
+
+    }//GEN-LAST:event_ta_descFocusGained
+
+    private void t_lugarFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_t_lugarFocusGained
+        // TODO add your handling code here:
+        t_lugar.setBorder(new LineBorder(Color.black,1));
+
+    }//GEN-LAST:event_t_lugarFocusGained
+
+    private void n_costeFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_n_costeFocusGained
+        // TODO add your handling code here:
+        n_coste.setBorder(new LineBorder(Color.black,1));
+
+    }//GEN-LAST:event_n_costeFocusGained
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -145,10 +250,11 @@ public class Anadir_espectaculo extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSpinner n_aforo;
     private javax.swing.JSpinner n_coste;
     private javax.swing.JTextField t_lugar;
     private javax.swing.JTextField t_name;
-    private javax.swing.JTextField tf_desc;
+    private javax.swing.JTextArea ta_desc;
     // End of variables declaration//GEN-END:variables
 }
