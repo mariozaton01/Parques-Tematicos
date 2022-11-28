@@ -107,9 +107,8 @@ public class Db {
             throw new RuntimeException(e);
         }
     }
-
     //Obtener información de la BBDD
-    public static void bdinfo(String baseDeDatos) {
+    public static ArrayList<String> bdinfo(String sql,String baseDeDatos) {
         Connection conexion = null;
         if (baseDeDatos.equalsIgnoreCase("H2")) {
             conexion = H2.conectar();
@@ -118,72 +117,34 @@ public class Db {
         } else if (baseDeDatos.equalsIgnoreCase("MySQL")) {
             conexion = MySQL.conectar();
         }
+        ArrayList<String> datosBd = new ArrayList<String>();
 
         try {
+            ResultSet result = conexion.createStatement().executeQuery(sql);
+            result.next();
             DatabaseMetaData dbmd = conexion.getMetaData();
-            ResultSet rs = null;
-            String nombre = dbmd.getDatabaseProductName();
+            String nombreDb = dbmd.getDatabaseProductName();
+            String nombre = result.getString("nombre");
+            String apertura = result.getString("aperteura");
+            String direccion = result.getString("direccion");
             String driver = dbmd.getDriverName();
             String url = dbmd.getURL();
             String usuario = dbmd.getUserName();
 
-            ArrayList<String> datosBd = new ArrayList<String>();
+            datosBd.add(nombreDb);
             datosBd.add(nombre);
+            datosBd.add(apertura);
+            datosBd.add(direccion);
             datosBd.add(driver);
             datosBd.add(url);
             datosBd.add(usuario);
 
-            //return datosBd;
-
-            rs = dbmd.getSchemas();
-            while (rs.next()) {
-                System.out.println("Esquema: " + rs.getString(1));
-            }
-            //Nombres de tablas
-            rs = dbmd.getTables(null, null, null, null);
-            ArrayList<String> tablas = new ArrayList<>();
-            while (rs.next()) {
-                System.out.println("Tabla: " + rs.getString(3));
-                tablas.add(rs.getString(3));
-            }
-            //Nombres de columnas
-            rs = dbmd.getColumns(null, null, null, null);
-            while (rs.next()) {
-                //Invalid value null for parameter "table" exception
-                try {
-                    System.out.println("Columna: " + rs.getString(4));
-                } catch (Exception e) {
-                    System.out.println("Error al obtener el nombre de la columna");
-                }
-            }
-            //Cual es la clave primaria de cada tabla
-            for (String tabla : tablas) {
-                rs = dbmd.getPrimaryKeys(null, null, tabla);
-                while (rs.next()) {
-                    System.out.println("Clave primaria de " + tabla + ": " + rs.getString(4));
-                }
-            }
-            System.out.println("*********");
-
-            //Por cada tabla, mostrar sus columnas
-            rs = dbmd.getTables(null, null, null, null);
-            while (rs.next()) {
-                System.out.println("Tabla: " + rs.getString(3));
-                ResultSet rs2 = dbmd.getColumns(null, null, rs.getString(3), null);
-                while (rs2.next()) {
-                    System.out.println("Columna: " + rs2.getString(4));
-                    //Tipo
-                    System.out.println("Tipo: " + rs2.getString(6));
-                    //Tamaño
-                    System.out.println("Tamaño: " + rs2.getString(7));
-                    //Nulo
-                    System.out.println("Nulo: " + rs2.getString(18));
-                }
-            }
-
         } catch (Exception e) {
             System.out.println(e);
         }
+        return datosBd;
+
     }
+
 
 }

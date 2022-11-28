@@ -46,7 +46,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="303" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jButton1" min="-2" pref="115" max="-2" attributes="0"/>
+                          <Component id="v_anadir" min="-2" pref="115" max="-2" attributes="0"/>
                           <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -86,7 +86,7 @@
                   </Group>
               </Group>
               <EmptySpace min="-2" pref="90" max="-2" attributes="0"/>
-              <Component id="jButton1" min="-2" pref="61" max="-2" attributes="0"/>
+              <Component id="v_anadir" min="-2" pref="61" max="-2" attributes="0"/>
               <EmptySpace pref="171" max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -124,24 +124,30 @@
     <Component class="javax.swing.JTextField" name="t_name">
       <Properties>
         <Property name="text" type="java.lang.String" value="name"/>
-        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
+      <Events>
+        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="t_nameFocusGained"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="t_apellido">
       <Properties>
         <Property name="text" type="java.lang.String" value="ape"/>
-        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
+      <Events>
+        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="t_apellidoFocusGained"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="t_dni">
       <Properties>
         <Property name="text" type="java.lang.String" value="dni"/>
-        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
+      <Events>
+        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="t_dniFocusGained"/>
+        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="t_dniFocusLost"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JSpinner" name="n_edad">
       <Properties>
-        <Property name="enabled" type="boolean" value="false"/>
         <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[84, 22]"/>
         </Property>
@@ -149,14 +155,20 @@
           <Dimension value="[84, 22]"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="n_edadFocusGained"/>
+      </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton1">
+    <Component class="javax.swing.JButton" name="v_anadir">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="18" style="1"/>
         </Property>
         <Property name="text" type="java.lang.String" value="A&#xf1;adir "/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="v_anadirActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

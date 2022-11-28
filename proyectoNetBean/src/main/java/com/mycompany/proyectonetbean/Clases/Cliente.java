@@ -9,12 +9,13 @@ package com.mycompany.proyectonetbean.Clases;
  * @author 8fdam02
  */
 public class Cliente {
+    private String id;
     private String nombre;
     private String apellido;
     private String dni;
     private int edad;
-    
-    public void Cliente(String nombre, String apellido, String dni, int edad){
+
+    public Cliente(String nombre, String apellido, String dni, int edad){
         this.nombre = nombre;
         this.apellido = apellido;
         this.dni = dni;
@@ -51,6 +52,14 @@ public class Cliente {
 
     public void setEdad(int edad) {
         this.edad = edad;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
     
 }

@@ -4,6 +4,11 @@
  */
 package com.mycompany.proyectonetbean.Ventanas.PanelesGestion;
 
+import com.mycompany.proyectonetbean.Clases.Cliente;
+import com.mycompany.proyectonetbean.ProyectoNetBean;
+
+import java.util.ArrayList;
+
 /**
  *
  * @author mario
@@ -15,6 +20,7 @@ public class Borrar_cliente extends javax.swing.JPanel {
      */
     public Borrar_cliente() {
         initComponents();
+        ProyectoNetBean.getClientestoComboBox(cb_cliente);
     }
 
     /**
@@ -36,10 +42,13 @@ public class Borrar_cliente extends javax.swing.JPanel {
 
         jLabel2.setText("Selecciona el cliente a borrar:");
 
-        cb_cliente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         b_borrar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         b_borrar.setText("Borrar");
+        b_borrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_borrarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -74,6 +83,16 @@ public class Borrar_cliente extends javax.swing.JPanel {
                 .addContainerGap(255, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void b_borrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_borrarActionPerformed
+        // TODO add your handling code here:
+        String selectedValue = cb_cliente.getSelectedItem().toString();
+        String id = selectedValue.split("-")[0];
+
+        ProyectoNetBean.deleteCliente(id);
+        cb_cliente.removeAllItems();
+        ProyectoNetBean.getClientestoComboBox(cb_cliente);
+    }//GEN-LAST:event_b_borrarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

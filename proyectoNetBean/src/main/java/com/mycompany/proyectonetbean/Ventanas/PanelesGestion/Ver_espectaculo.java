@@ -4,9 +4,12 @@
  */
 package com.mycompany.proyectonetbean.Ventanas.PanelesGestion;
 
+import com.mycompany.proyectonetbean.Clases.Cliente;
 import com.mycompany.proyectonetbean.Clases.Espectaculo;
 import com.mycompany.proyectonetbean.ProyectoNetBean;
 
+import javax.swing.border.LineBorder;
+import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -56,7 +59,6 @@ public class Ver_espectaculo extends javax.swing.JPanel {
 
         jLabel2.setText("Selecciona un espectaculo:");
 
-        cb_espectaculos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cb_espectaculos.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 try {
@@ -207,6 +209,36 @@ public class Ver_espectaculo extends javax.swing.JPanel {
 
     private void b_udpate_especActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_udpate_especActionPerformed
         // TODO add your handling code here:
+        int cont = 0;
+        if (t_name.getText().isEmpty()) {
+            cont++;
+            t_name.setBorder(new LineBorder(Color.red, 1));
+        }
+        if (t_lugar.getText().isEmpty()) {
+            cont++;
+            t_lugar.setBorder(new LineBorder(Color.red, 1));
+        }
+        if (ta_desc.getText().toString().isEmpty()) {
+            cont++;
+            ta_desc.setBorder(new LineBorder(Color.red, 1));
+        }
+        if (n_aforo.getValue().toString().equals('0')) {
+            cont++;
+            n_aforo.setBorder(new LineBorder(Color.red, 1));
+        }
+
+        Espectaculo espectaculo = null;
+        if (cont == 0) {
+            espectaculo = new Espectaculo(t_name.getText(), Integer.parseInt(n_aforo.getValue().toString()), ta_desc.getText(), t_lugar.getText(), Integer.parseInt(n_coste.getValue().toString()));
+            String selectedValue = cb_espectaculos.getSelectedItem().toString();
+            String id = selectedValue.split("-")[0];
+            espectaculo.setId(id);
+        }
+
+        ProyectoNetBean.updateEspectaculo(espectaculo);
+
+        cb_espectaculos.removeAllItems();
+        ProyectoNetBean.getEspectaculostoComboBox(cb_espectaculos);
     }//GEN-LAST:event_b_udpate_especActionPerformed
 
     private void cb_espectaculosItemStateChanged(java.awt.event.ItemEvent evt) throws SQLException {//GEN-FIRST:event_cb_espectaculosItemStateChanged

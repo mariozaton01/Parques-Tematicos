@@ -4,11 +4,20 @@
  */
 package com.mycompany.proyectonetbean.Ventanas.PanelesGestion;
 
+import com.mycompany.proyectonetbean.Clases.Cliente;
+import com.mycompany.proyectonetbean.ProyectoNetBean;
+
+import javax.swing.*;
+import javax.swing.border.LineBorder;
+import java.awt.*;
+import java.sql.SQLException;
+
 /**
  *
  * @author mario
  */
 public class Anadir_cliente extends javax.swing.JPanel {
+    Boolean error = false;
 
     /**
      * Creates new form Anadir_cliente
@@ -35,7 +44,7 @@ public class Anadir_cliente extends javax.swing.JPanel {
         t_apellido = new javax.swing.JTextField();
         t_dni = new javax.swing.JTextField();
         n_edad = new javax.swing.JSpinner();
-        jButton1 = new javax.swing.JButton();
+        v_anadir = new javax.swing.JButton();
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Añadir cliente");
@@ -49,20 +58,48 @@ public class Anadir_cliente extends javax.swing.JPanel {
         jLabel5.setText("Edad:");
 
         t_name.setText("name");
-        t_name.setEnabled(false);
+        t_name.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                t_nameFocusGained(evt);
+            }
+        });
 
         t_apellido.setText("ape");
-        t_apellido.setEnabled(false);
+        t_apellido.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                t_apellidoFocusGained(evt);
+            }
+        });
 
         t_dni.setText("dni");
-        t_dni.setEnabled(false);
+        t_dni.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                t_dniFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                try {
+                    t_dniFocusLost(evt);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
 
-        n_edad.setEnabled(false);
         n_edad.setMinimumSize(new java.awt.Dimension(84, 22));
         n_edad.setPreferredSize(new java.awt.Dimension(84, 22));
+        n_edad.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                n_edadFocusGained(evt);
+            }
+        });
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton1.setText("Añadir ");
+        v_anadir.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        v_anadir.setText("Añadir ");
+        v_anadir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                v_anadirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -92,7 +129,7 @@ public class Anadir_cliente extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(303, 303, 303)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(v_anadir, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel1))))
                 .addContainerGap(202, Short.MAX_VALUE))
         );
@@ -120,14 +157,83 @@ public class Anadir_cliente extends javax.swing.JPanel {
                             .addComponent(jLabel5)
                             .addComponent(n_edad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(90, 90, 90)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(v_anadir, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(171, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void v_anadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_v_anadirActionPerformed
+        // TODO add your handling code here:
+        int cont = 0;
+        if(t_name.getText().isEmpty() ){
+            cont++;
+            t_name.setBorder(new LineBorder(Color.red,1));
+        }
+        if(t_apellido.getText().isEmpty() ){
+            cont++;
+            t_apellido.setBorder(new LineBorder(Color.red,1));
+        }
+        if(t_dni.getText().isEmpty() ){
+            cont++;
+            t_dni.setBorder(new LineBorder(Color.red,1));
+        }
+        if(n_edad.getValue().toString().equals('0') ){
+            cont++;
+            n_edad.setBorder(new LineBorder(Color.red,1));
+        }
+        
+        if (cont == 0 && !error) {
+            Cliente c = new Cliente(t_name.getText(), t_apellido.getText(),t_dni.getText(), Integer.parseInt(n_edad.getValue().toString()));
+            ProyectoNetBean.insertCliente(c);
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Revisa los datos");
+
+        }
+    }//GEN-LAST:event_v_anadirActionPerformed
+
+    private void t_nameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_t_nameFocusGained
+        // TODO add your handling code here:
+        t_name.setBorder(new LineBorder(Color.black,1));
+
+    }//GEN-LAST:event_t_nameFocusGained
+
+    private void t_apellidoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_t_apellidoFocusGained
+        // TODO add your handling code here:
+        t_apellido.setBorder(new LineBorder(Color.black,1));
+
+    }//GEN-LAST:event_t_apellidoFocusGained
+
+    private void t_dniFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_t_dniFocusGained
+        // TODO add your handling code here:          
+        t_dni.setBorder(new LineBorder(Color.black,1));
+        t_dni.setForeground(Color.black);
+
+        t_dni.setText("");
+
+        
+    }//GEN-LAST:event_t_dniFocusGained
+
+    private void n_edadFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_n_edadFocusGained
+        // TODO add your handling code here:  
+        n_edad.setBorder(new LineBorder(Color.black,1));
+
+    }//GEN-LAST:event_n_edadFocusGained
+
+    private void t_dniFocusLost(java.awt.event.FocusEvent evt) throws SQLException {//GEN-FIRST:event_t_dniFocusLost
+        // TODO add your handling code here:
+        String dni = t_dni.getText();
+        error = ProyectoNetBean.getDni(dni);
+        if (error){
+            t_dni.setBorder(new LineBorder(Color.red,1));
+            t_dni.setText("DNI ya utilizado");
+            t_dni.setForeground(Color.red);
+
+        }
+    }//GEN-LAST:event_t_dniFocusLost
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -137,5 +243,6 @@ public class Anadir_cliente extends javax.swing.JPanel {
     private javax.swing.JTextField t_apellido;
     private javax.swing.JTextField t_dni;
     private javax.swing.JTextField t_name;
+    private javax.swing.JButton v_anadir;
     // End of variables declaration//GEN-END:variables
 }

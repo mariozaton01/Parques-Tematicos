@@ -49,7 +49,7 @@
                               <EmptySpace min="154" pref="156" max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="b_edit_cliente" min="-2" pref="207" max="-2" attributes="0"/>
-                                  <Component id="b_anadir_espectatculo" min="-2" max="-2" attributes="0"/>
+                                  <Component id="b_update_cliente" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
                           </Group>
@@ -90,7 +90,7 @@
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="b_anadir_espectatculo" min="-2" pref="52" max="-2" attributes="0"/>
+                          <Component id="b_update_cliente" min="-2" pref="52" max="-2" attributes="0"/>
                           <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                               <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="t_apellido" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -190,19 +190,23 @@
     </Component>
     <Component class="javax.swing.JTextField" name="t_name">
       <Properties>
-        <Property name="text" type="java.lang.String" value="name"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
+      <Events>
+        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="t_nameFocusGained"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="t_nameActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="t_apellido">
       <Properties>
-        <Property name="text" type="java.lang.String" value="ape"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
+      <Events>
+        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="t_apellidoFocusGained"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="t_dni">
       <Properties>
-        <Property name="text" type="java.lang.String" value="dni"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
@@ -210,6 +214,9 @@
       <Properties>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
+      <Events>
+        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="n_edadFocusGained"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="b_edit_cliente">
       <Properties>
@@ -222,7 +229,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="b_edit_clienteActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="b_anadir_espectatculo">
+    <Component class="javax.swing.JButton" name="b_update_cliente">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="18" style="1"/>
@@ -230,7 +237,7 @@
         <Property name="text" type="java.lang.String" value="A&#xf1;adir a espectaculo"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="b_anadir_espectatculoActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="b_update_clienteActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel6">
@@ -245,6 +252,7 @@
         </Property>
       </Properties>
       <Events>
+        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="cb_clienteItemStateChanged"/>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cb_clienteActionPerformed"/>
       </Events>
       <AuxValues>

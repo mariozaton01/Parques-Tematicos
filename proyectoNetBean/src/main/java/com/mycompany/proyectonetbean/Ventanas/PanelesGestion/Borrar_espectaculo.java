@@ -42,8 +42,6 @@ public class Borrar_espectaculo extends javax.swing.JPanel {
 
         jLabel2.setText("Selecciona el espectaculo a borrar:");
 
-        cb_espectaculos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         b_borrar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         b_borrar.setText("Borrar");
         b_borrar.addActionListener(new java.awt.event.ActionListener() {
@@ -62,9 +60,7 @@ public class Borrar_espectaculo extends javax.swing.JPanel {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cb_espectaculos, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(30, 30, 30))
+                            .addComponent(jLabel2)
                             .addComponent(jLabel1))
                         .addGap(396, 396, 396))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -92,6 +88,8 @@ public class Borrar_espectaculo extends javax.swing.JPanel {
         String id = selectedValue.split("-")[0];
 
         ProyectoNetBean.deleteEspectaculo(id);
+        cb_espectaculos.removeAllItems();
+        ProyectoNetBean.getEspectaculostoComboBox(cb_espectaculos);
 
     }//GEN-LAST:event_b_borrarActionPerformed
 

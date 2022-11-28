@@ -4,6 +4,12 @@
  */
 package com.mycompany.proyectonetbean.Ventanas.PanelesGestion;
 
+import com.mycompany.proyectonetbean.Clases.Cliente;
+import com.mycompany.proyectonetbean.ProyectoNetBean;
+import java.awt.Color;
+import javax.swing.JOptionPane;
+import javax.swing.border.LineBorder;
+
 /**
  *
  * @author mario
@@ -15,6 +21,8 @@ public class Ver_cliente extends javax.swing.JPanel {
      */
     public Ver_cliente() {
         initComponents();
+        ProyectoNetBean.getClientestoComboBox(cb_cliente);
+
     }
 
     /**
@@ -38,7 +46,7 @@ public class Ver_cliente extends javax.swing.JPanel {
         t_dni = new javax.swing.JTextField();
         n_edad = new javax.swing.JSpinner();
         b_edit_cliente = new javax.swing.JButton();
-        b_anadir_espectatculo = new javax.swing.JButton();
+        b_update_cliente = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         cb_cliente = new javax.swing.JComboBox<>();
 
@@ -81,16 +89,33 @@ public class Ver_cliente extends javax.swing.JPanel {
 
         jLabel5.setText("Edad:");
 
-        t_name.setText("name");
         t_name.setEnabled(false);
+        t_name.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                t_nameFocusGained(evt);
+            }
+        });
+        t_name.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                t_nameActionPerformed(evt);
+            }
+        });
 
-        t_apellido.setText("ape");
         t_apellido.setEnabled(false);
+        t_apellido.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                t_apellidoFocusGained(evt);
+            }
+        });
 
-        t_dni.setText("dni");
         t_dni.setEnabled(false);
 
         n_edad.setEnabled(false);
+        n_edad.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                n_edadFocusGained(evt);
+            }
+        });
 
         b_edit_cliente.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         b_edit_cliente.setText("Editar datos");
@@ -100,16 +125,21 @@ public class Ver_cliente extends javax.swing.JPanel {
             }
         });
 
-        b_anadir_espectatculo.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        b_anadir_espectatculo.setText("Añadir a espectaculo");
-        b_anadir_espectatculo.addActionListener(new java.awt.event.ActionListener() {
+        b_update_cliente.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        b_update_cliente.setText("Añadir a espectaculo");
+        b_update_cliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                b_anadir_espectatculoActionPerformed(evt);
+                b_update_clienteActionPerformed(evt);
             }
         });
 
         jLabel6.setText("Selecciona el cliente:");
 
+        cb_cliente.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cb_clienteItemStateChanged(evt);
+            }
+        });
         cb_cliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cb_clienteActionPerformed(evt);
@@ -148,7 +178,7 @@ public class Ver_cliente extends javax.swing.JPanel {
                                 .addGap(154, 156, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(b_edit_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(b_anadir_espectatculo))
+                                    .addComponent(b_update_cliente))
                                 .addGap(43, 43, 43))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(318, 318, 318)
@@ -178,7 +208,7 @@ public class Ver_cliente extends javax.swing.JPanel {
                             .addComponent(b_edit_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(b_anadir_espectatculo, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(b_update_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel3)
                                 .addComponent(t_apellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -199,20 +229,80 @@ public class Ver_cliente extends javax.swing.JPanel {
 
     private void b_edit_clienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_edit_clienteActionPerformed
         // TODO add your handling code here:
+        t_name.setEnabled(true);        
+        t_apellido.setEnabled(true);      
+        n_edad.setEnabled(true);
+
+
     }//GEN-LAST:event_b_edit_clienteActionPerformed
 
-    private void b_anadir_espectatculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_anadir_espectatculoActionPerformed
+    private void b_update_clienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_update_clienteActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_b_anadir_espectatculoActionPerformed
+        int cont = 0;
+        if(t_name.getText().isEmpty() ){
+            cont++;
+            t_name.setBorder(new LineBorder(Color.red,1));
+        }
+        if(t_apellido.getText().isEmpty() ){
+            cont++;
+            t_apellido.setBorder(new LineBorder(Color.red,1));
+        }
+        if(n_edad.getValue().toString().equals('0') ){
+            cont++;
+            n_edad.setBorder(new LineBorder(Color.red,1));
+        }
+        
+        if (cont == 0) {
+            Cliente c = new Cliente(t_name.getText(), t_apellido.getText(),t_dni.getText(), Integer.parseInt(n_edad.getValue().toString()));
+            String selectedValue = cb_cliente.getSelectedItem().toString();
+            String id = selectedValue.split("-")[0];
+            c.setId(id);
+
+            ProyectoNetBean.updateCliente(c);
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Revisa los datos");
+
+        }
+    }//GEN-LAST:event_b_update_clienteActionPerformed
 
     private void cb_clienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_clienteActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cb_clienteActionPerformed
 
+    private void cb_clienteItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cb_clienteItemStateChanged
+        // TODO add your handling code here:
+        t_name.setEnabled(false);        
+        t_apellido.setEnabled(false);      
+        n_edad.setEnabled(false);
+    }//GEN-LAST:event_cb_clienteItemStateChanged
+
+    private void t_nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_nameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_t_nameActionPerformed
+
+    private void t_nameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_t_nameFocusGained
+        // TODO add your handling code here:
+        t_name.setBorder(new LineBorder(Color.black,1));
+
+    }//GEN-LAST:event_t_nameFocusGained
+
+    private void t_apellidoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_t_apellidoFocusGained
+        // TODO add your handling code here:
+        t_apellido.setBorder(new LineBorder(Color.black,1));
+
+    }//GEN-LAST:event_t_apellidoFocusGained
+
+    private void n_edadFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_n_edadFocusGained
+        // TODO add your handling code here:
+        n_edad.setBorder(new LineBorder(Color.black,1));
+
+    }//GEN-LAST:event_n_edadFocusGained
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton b_anadir_espectatculo;
     private javax.swing.JButton b_edit_cliente;
+    private javax.swing.JButton b_update_cliente;
     private javax.swing.JComboBox<String> cb_cliente;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

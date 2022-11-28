@@ -203,7 +203,6 @@ public class Anadir_espectaculo extends javax.swing.JPanel {
         }
         else{
             JOptionPane.showMessageDialog(null, "No dejes campos vacios");
-
         }
     }//GEN-LAST:event_b_guardarActionPerformed
 

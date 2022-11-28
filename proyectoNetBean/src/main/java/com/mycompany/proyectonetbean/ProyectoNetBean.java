@@ -15,7 +15,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 
-import com.mycompany.proyectonetbean.Clases.Empleado;
+import com.mycompany.proyectonetbean.Clases.*;
 import com.mycompany.proyectonetbean.Clases.Espectaculo;
 import com.mycompany.proyectonetbean.Ventanas.*;
 import com.mycompany.proyectonetbean.DB.Db;
@@ -125,8 +125,9 @@ public class ProyectoNetBean {
 
             while(result.next()){
                 String nombre = result.getString("nombre");
-                System.out.println(nombre);
-                cb_clientes.addItem(nombre);
+                String apellido = result.getString("apellido");
+                String id = String.valueOf(result.getInt("id"));
+                cb_clientes.addItem(id+"- " + nombre +" "+apellido);
             }
 
         }
@@ -203,8 +204,8 @@ public class ProyectoNetBean {
         String sql = "INSERT INTO empleados (nombre,apellido,dni,edad,fecha_nac,fecha_contrato,nacionalidad,cargo) VALUES ("+emple.getNombre()+", " +emple.getApellido()+", "+emple.getDni()+", "+emple.getEdad()+", "+emple.getFecha_nac()+", "+emple.getFecha_contrato()+", "+emple.getNacionalidad()+", "+emple.getCargo()+")";
         Db.inserts(sql,chosenDb);
     }
-    public static void insertCliente(Empleado emple){
-        String sql = "INSERT INTO empleados (nombre,apellido,dni,edad,fecha_nac,fecha_contrato,nacionalidad,cargo) VALUES ("+emple.getNombre()+", " +emple.getApellido()+", "+emple.getDni()+", "+emple.getEdad()+", "+emple.getFecha_nac()+", "+emple.getFecha_contrato()+", "+emple.getNacionalidad()+", "+emple.getCargo()+")";
+    public static void insertCliente(Cliente cliente){
+        String sql = "INSERT INTO clientes (nombre,apellido,dni,edad) VALUES ('"+cliente.getNombre()+"', '" +cliente.getApellido()+"', '"+cliente.getDni()+"', '"+cliente.getEdad()+"')";
         Db.inserts(sql,chosenDb);
     }
 
@@ -221,5 +222,42 @@ public class ProyectoNetBean {
         String sql = "DELETE FROM empleados where id = '"+id+"'";
         Db.deletes(sql,chosenDb);
 
+    }
+    public static ArrayList<String> getBDdata(){
+        String sql = "SELECT * FROM parque;";
+        ArrayList<String> dataDb = Db.bdinfo(sql,chosenDb);
+
+        return dataDb;
+
+
+    }
+    public static boolean getDni(String dni) throws SQLException {
+        String sql = "Select * from clientes where dni = '"+dni + "';";
+        ResultSet result = Db.selects(sql,chosenDb);
+        Boolean error = false;
+        if(!result.next()){
+            error = false;
+        }
+        else {
+            error = true;
+        }
+        return error;
+
+    }
+
+    public static void updateCliente(Cliente c) {
+        String sql = "UPDATE clientes set nombre = '"+c.getNombre()+"',apellido = '"+c.getApellido() + "',edad = '"+ c.getEdad() + "' where id = '"+c.getId()+"');";
+        Db.updates(sql,chosenDb);
+
+    }
+    public static void updateEmpleado(Cliente c) {
+        String sql = "UPDATE empleados set nombre = '"+c.getNombre()+"',apellido = '"+c.getApellido() + "',edad = '"+ c.getEdad() + "' where id = '"+c.getId()+"');";
+        Db.updates(sql,chosenDb);
+
+    }
+
+    public static void updateEspectaculo(Espectaculo e) {
+        String sql = "UPDATE espectaculos set nombre = '"+e.getNombre() + "',aforo = '"+ e.getAforo()+ "',descripcion = '"+ e.getDescripcion()+"',lugar = '"+e.getLugar()+  "',coste = '"+ e.getCoste()+ "' where id = '"+e.getId()+"';";
+        Db.updates(sql,chosenDb);
     }
 }

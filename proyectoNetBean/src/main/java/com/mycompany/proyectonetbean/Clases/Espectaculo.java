@@ -10,6 +10,7 @@ package com.mycompany.proyectonetbean.Clases;
  */
 public class Espectaculo {
 
+    private String id;
     private String nombre;
     private int aforo;
     private String descripcion;
@@ -69,5 +70,11 @@ public class Espectaculo {
         this.coste = coste;
     }
 
+    public String getId() {
+        return id;
+    }
 
+    public void setId(String id) {
+        this.id = id;
+    }
 }
