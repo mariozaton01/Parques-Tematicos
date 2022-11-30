@@ -3,8 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package com.mycompany.proyectonetbean.Ventanas.PanelesGestion;
+import com.mycompany.proyectonetbean.Clases.Cliente;
 import com.mycompany.proyectonetbean.Clases.Empleado;
+import com.mycompany.proyectonetbean.ProyectoNetBean;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 
@@ -20,12 +23,8 @@ public class Ver_empleado extends javax.swing.JPanel {
     ArrayList<Empleado>lista_empleados;
     public Ver_empleado() {
         initComponents();
-        lista_empleados = new ArrayList<Empleado>();
-        //lista_empleados = db.get_lista_empleados();
+        ProyectoNetBean.getEmpleadostoComboBox(cb_emple);
 
-        for(Empleado emple: lista_empleados){
-            cb_emple.addItem(emple.getNombre() + " "+ emple.getApellido());
-        }
 
     }
 
@@ -125,10 +124,13 @@ public class Ver_empleado extends javax.swing.JPanel {
 
         jLabel10.setText("Seleccionar empleado:");
 
-        cb_emple.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cb_emple.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                cb_empleItemStateChanged(evt);
+                try {
+                    cb_empleItemStateChanged(evt);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
@@ -246,7 +248,7 @@ public class Ver_empleado extends javax.swing.JPanel {
 
     private void b_update_empleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_update_empleActionPerformed
         // TODO add your handling code here:
-        Empleado emple = new Empleado(t_name.getText(),t_apellido.getText(),t_dni.getText(),9 ,t_nacionalidad.getText(),(String) c_fecha_nac.getDate().toString(), (String) c_fecha_contrato.getDate().toString(), cb_cargo.getSelectedIndex());
+        Empleado emple = new Empleado(t_name.getText(),t_apellido.getText(),t_dni.getText(),9 ,t_nacionalidad.getText(), c_fecha_nac.getDate(),  c_fecha_contrato.getDate(), cb_cargo.getSelectedIndex());
         
         //db.updateEmpleado(emple);
     }//GEN-LAST:event_b_update_empleActionPerformed
@@ -255,31 +257,43 @@ public class Ver_empleado extends javax.swing.JPanel {
         // TODO add your handling code here:
         t_name.setEnabled(true);
         t_apellido.setEnabled(true);
-        t_dni.setEnabled(true);
         c_fecha_nac.setEnabled(true);
         c_fecha_contrato.setEnabled(true);
         n_edad.setEnabled(true);
         t_nacionalidad.setEnabled(true);
-        cb_cargo.setEnabled(true);
-        
+
         b_update_emple.setEnabled(true);
            
     }//GEN-LAST:event_b_editar_empleActionPerformed
 
-    private void cb_empleItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cb_empleItemStateChanged
+    private void cb_empleItemStateChanged(java.awt.event.ItemEvent evt) throws SQLException {//GEN-FIRST:event_cb_empleItemStateChanged
         // TODO add your handling code here:
         //db.get_empleados();
+        if(cb_emple.getItemCount() > 0) {
+            String selectedValue = cb_emple.getSelectedItem().toString();
+            String id = selectedValue.split("-")[0];
+            Empleado emple = ProyectoNetBean.getEmpleadoByID(id);
 
-        t_name.setEnabled(false);
-        t_apellido.setEnabled(false);
-        t_dni.setEnabled(false);
-        c_fecha_nac.setEnabled(false);
-        c_fecha_contrato.setEnabled(false);
-        n_edad.setEnabled(false);
-        t_nacionalidad.setEnabled(false);
-        cb_cargo.setEnabled(false);
-        
-        b_update_emple.setEnabled(false);
+            t_name.setText(emple.getNombre());
+            t_apellido.setText(emple.getApellido());
+            c_fecha_nac.setDate(emple.getFecha_nac());
+            c_fecha_contrato.setDate(emple.getFecha_contrato());
+            n_edad.setValue(emple.getEdad());
+            t_nacionalidad.setText(emple.getNacionalidad());
+
+            b_update_emple.setEnabled(false);
+
+            t_name.setEnabled(false);
+            t_apellido.setEnabled(false);
+            c_fecha_nac.setEnabled(false);
+            c_fecha_contrato.setEnabled(false);
+            n_edad.setEnabled(false);
+            t_nacionalidad.setEnabled(false);
+
+            b_update_emple.setEnabled(false);
+        }
+
+
         
     }//GEN-LAST:event_cb_empleItemStateChanged
 

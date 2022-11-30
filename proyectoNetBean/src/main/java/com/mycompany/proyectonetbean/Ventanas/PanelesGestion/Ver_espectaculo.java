@@ -243,23 +243,28 @@ public class Ver_espectaculo extends javax.swing.JPanel {
 
     private void cb_espectaculosItemStateChanged(java.awt.event.ItemEvent evt) throws SQLException {//GEN-FIRST:event_cb_espectaculosItemStateChanged
         // TODO add your handling code here:
-        String selectedValue = cb_espectaculos.getSelectedItem().toString();
-        String id = selectedValue.split("-")[0];
-        Espectaculo espectaculo = null;
-        espectaculo = ProyectoNetBean.getEspectaculoByID(id);
+        if(cb_espectaculos.getItemCount() > 0){
+            String selectedValue = cb_espectaculos.getSelectedItem().toString();
+            String id = selectedValue.split("-")[0];
+            Espectaculo espectaculo = null;
+            espectaculo = ProyectoNetBean.getEspectaculoByID(id);
 
-        t_name.setEnabled(false);
-        n_aforo.setEnabled(false);
-        ta_desc.setEnabled(false);
-        t_lugar.setEnabled(false);
-        n_coste.setEnabled(false);
-        b_udpate_espec.setEnabled(false);
+            t_name.setEnabled(false);
+            n_aforo.setEnabled(false);
+            ta_desc.setEnabled(false);
+            t_lugar.setEnabled(false);
+            n_coste.setEnabled(false);
+            b_udpate_espec.setEnabled(false);
 
-        t_name.setText( espectaculo.getNombre());
-        t_lugar.setText( espectaculo.getLugar());
-        ta_desc.setText( espectaculo.getDescripcion());
-        n_aforo.setValue( espectaculo.getAforo());
-        n_coste.setValue( espectaculo.getCoste());
+            t_name.setText( espectaculo.getNombre());
+            t_lugar.setText( espectaculo.getLugar());
+            ta_desc.setText( espectaculo.getDescripcion());
+            n_aforo.setValue( espectaculo.getAforo());
+            n_coste.setValue( espectaculo.getCoste());
+        }
+
+
+
 
     }//GEN-LAST:event_cb_espectaculosItemStateChanged
 

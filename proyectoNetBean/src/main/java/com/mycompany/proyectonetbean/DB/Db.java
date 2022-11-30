@@ -125,7 +125,7 @@ public class Db {
             DatabaseMetaData dbmd = conexion.getMetaData();
             String nombreDb = dbmd.getDatabaseProductName();
             String nombre = result.getString("nombre");
-            String apertura = result.getString("aperteura");
+            String apertura = result.getString("apertura");
             String direccion = result.getString("direccion");
             String driver = dbmd.getDriverName();
             String url = dbmd.getURL();

@@ -4,21 +4,24 @@
  */
 package com.mycompany.proyectonetbean.Clases;
 
+import java.util.Date;
+
 /**
  *
  * @author 8fdam02
  */
 public class Empleado {
+    private String id;
     private String nombre;
     private String apellido;
     private String dni;
     private int edad;
     private String nacionalidad;
-    private String fecha_nac;
-    private String fecha_contrato;
+    private Date fecha_nac;
+    private Date fecha_contrato;
     private int cargo;
     
-    public Empleado(String nombre, String apellido, String dni, int edad, String nacionalidad, String fecha_nac, String fecha_contrato, int cargo){
+    public Empleado(String nombre, String apellido, String dni, int edad, String nacionalidad, Date fecha_nac, Date fecha_contrato, int cargo){
         this.nombre = nombre;
         this.apellido = apellido;
         this.dni = dni;
@@ -73,19 +76,19 @@ public class Empleado {
         this.nacionalidad = nacionalidad;
     }
 
-    public String getFecha_nac() {
+    public Date getFecha_nac() {
         return fecha_nac;
     }
 
-    public void setFecha_nac(String fecha_nac) {
+    public void setFecha_nac(Date fecha_nac) {
         this.fecha_nac = fecha_nac;
     }
 
-    public String getFecha_contrato() {
+    public Date getFecha_contrato() {
         return fecha_contrato;
     }
 
-    public void setFecha_contrato(String fecha_contrato) {
+    public void setFecha_contrato(Date fecha_contrato) {
         this.fecha_contrato = fecha_contrato;
     }
 
@@ -95,6 +98,14 @@ public class Empleado {
 
     public void setCargo(int cargo) {
         this.cargo = cargo;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
     
     

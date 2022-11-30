@@ -138,16 +138,17 @@ public class ProyectoNetBean {
 
     }
     public static void getEmpleadostoComboBox(JComboBox<String> cb_empleados) {
-        String sql = "SELECT * from empleados where cargo = 1;";
+        String sql = "SELECT * from empleados where";
         ResultSet result = null;
         try{
             result = Db.selects(sql, chosenDb);
 
             while(result.next()){
                 String nombre = result.getString("nombre");
+                String apellido = result.getString("apellido");
                 String id = String.valueOf(result.getInt("id"));
 
-                cb_empleados.addItem(id+"- " + nombre);
+                cb_empleados.addItem(id+"- " + nombre + " "+ apellido);
             }
 
         }
@@ -187,8 +188,8 @@ public class ProyectoNetBean {
             empleado.setDni(result.getString("dni"));
             empleado.setCargo(result.getInt("cargo"));
             empleado.setNacionalidad(result.getString("nacionalidad"));
-            empleado.setFecha_nac(result.getString("fecha_nac"));
-            empleado.setFecha_contrato(result.getString("fecha_contrato"));
+            empleado.setFecha_nac(result.getDate("fecha_nac"));
+            empleado.setFecha_contrato(result.getDate("fecha_contrato"));
 
         }
 
@@ -246,12 +247,13 @@ public class ProyectoNetBean {
     }
 
     public static void updateCliente(Cliente c) {
-        String sql = "UPDATE clientes set nombre = '"+c.getNombre()+"',apellido = '"+c.getApellido() + "',edad = '"+ c.getEdad() + "' where id = '"+c.getId()+"');";
+        String sql = "UPDATE clientes set nombre = '"+c.getNombre()+"',apellido = '"+c.getApellido() + "',edad = '"+ c.getEdad() + "' where id = '"+c.getId()+"';";
         Db.updates(sql,chosenDb);
 
     }
-    public static void updateEmpleado(Cliente c) {
-        String sql = "UPDATE empleados set nombre = '"+c.getNombre()+"',apellido = '"+c.getApellido() + "',edad = '"+ c.getEdad() + "' where id = '"+c.getId()+"');";
+    public static void updateEmpleado(Empleado e) {
+        String sql = "UPDATE empleados set nombre = '"+e.getNombre()+"',apellido = '"+e.getApellido() +"',dni = '"+e.getDni()+ "',edad = '"+ e.getEdad() + "',fecha_nac = '"+e.getFecha_nac()+
+                "',fecha_contrato = '"+e.getFecha_contrato()+ "',nacionalidad = '"+e.getNacionalidad()+ "',cargo = '"+e.getCargo()+"' where id = '"+e.getId()+"');";
         Db.updates(sql,chosenDb);
 
     }
@@ -259,5 +261,21 @@ public class ProyectoNetBean {
     public static void updateEspectaculo(Espectaculo e) {
         String sql = "UPDATE espectaculos set nombre = '"+e.getNombre() + "',aforo = '"+ e.getAforo()+ "',descripcion = '"+ e.getDescripcion()+"',lugar = '"+e.getLugar()+  "',coste = '"+ e.getCoste()+ "' where id = '"+e.getId()+"';";
         Db.updates(sql,chosenDb);
+    }
+
+    public static Cliente getClienteByID(String id) throws SQLException {
+        String sql = "Select * from clientes where id = "+id;
+        ResultSet result = null;
+        result = Db.selects(sql, chosenDb);
+        Cliente cliente = new Cliente();
+
+        if (result.next()){
+            cliente.setNombre(result.getString("nombre"));
+            cliente.setApellido(result.getString("apellido"));
+            cliente.setDni(result.getString("dni"));
+            cliente.setEdad(result.getInt("edad"));
+        }
+
+        return  cliente;
     }
 }

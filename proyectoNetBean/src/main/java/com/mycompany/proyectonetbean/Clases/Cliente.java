@@ -22,6 +22,10 @@ public class Cliente {
         this.edad = edad;
     }
 
+    public Cliente() {
+
+    }
+
     public String getNombre() {
         return nombre;
     }
