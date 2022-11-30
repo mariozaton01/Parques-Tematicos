@@ -143,7 +143,11 @@ public class Ver_cliente extends javax.swing.JPanel {
 
         cb_cliente.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                cb_clienteItemStateChanged(evt);
+                try {
+                    cb_clienteItemStateChanged(evt);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
         cb_cliente.addActionListener(new java.awt.event.ActionListener() {
@@ -341,6 +345,9 @@ public class Ver_cliente extends javax.swing.JPanel {
 
     private void b_anadir_a_espectaculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_anadir_a_espectaculoActionPerformed
         // TODO add your handling code here:
+        String selectedValue = cb_cliente.getSelectedItem().toString();
+        String id = selectedValue.split("-")[0];
+        ProyectoNetBean.callAnadirClienteAEspectaculo(id);
     }//GEN-LAST:event_b_anadir_a_espectaculoActionPerformed
 
 

@@ -57,21 +57,18 @@ public class Anadir_cliente extends javax.swing.JPanel {
 
         jLabel5.setText("Edad:");
 
-        t_name.setText("name");
         t_name.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 t_nameFocusGained(evt);
             }
         });
 
-        t_apellido.setText("ape");
         t_apellido.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 t_apellidoFocusGained(evt);
             }
         });
 
-        t_dni.setText("dni");
         t_dni.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 t_dniFocusGained(evt);

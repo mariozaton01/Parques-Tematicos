@@ -4,11 +4,23 @@
  */
 package com.mycompany.proyectonetbean.Ventanas.PanelesGestion;
 
+import com.mycompany.proyectonetbean.Clases.Cliente;
+import com.mycompany.proyectonetbean.Clases.Empleado;
+import com.mycompany.proyectonetbean.ProyectoNetBean;
+
+import javax.swing.*;
+import javax.swing.border.LineBorder;
+import java.awt.*;
+import java.sql.SQLException;
+import java.util.Date;
+
 /**
  *
  * @author mario
  */
 public class Anadir_empleado extends javax.swing.JPanel {
+
+    Boolean error = false;
 
     /**
      * Creates new form Anadir_empleado
@@ -51,6 +63,11 @@ public class Anadir_empleado extends javax.swing.JPanel {
         jLabel1.setText("Añadir empleados");
 
         n_edad.setPreferredSize(new java.awt.Dimension(84, 22));
+        n_edad.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                n_edadMouseClicked(evt);
+            }
+        });
 
         jLabel6.setText("Fecha nacimiento:");
 
@@ -81,14 +98,40 @@ public class Anadir_empleado extends javax.swing.JPanel {
 
         jLabel5.setText("Edad:");
 
-        t_name.setText("name");
+        t_name.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                t_nameActionPerformed(evt);
+            }
+        });
 
-        t_apellido.setText("ape");
+        t_apellido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                t_apellidoActionPerformed(evt);
+            }
+        });
 
-        t_dni.setText("dni");
+        t_dni.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                try {
+                    t_dniFocusLost(evt);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        t_dni.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                t_dniActionPerformed(evt);
+            }
+        });
 
         b_anadir.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         b_anadir.setText("Añadir");
+        b_anadir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_anadirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -182,11 +225,90 @@ public class Anadir_empleado extends javax.swing.JPanel {
 
     private void t_nacionalidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_nacionalidadActionPerformed
         // TODO add your handling code here:
+                t_nacionalidad.setBorder(new LineBorder(Color.black,1));
     }//GEN-LAST:event_t_nacionalidadActionPerformed
 
     private void cb_cargoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_cargoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cb_cargoActionPerformed
+
+    private void b_anadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_anadirActionPerformed
+        // TODO add your handling code here:
+        int cont = 0;
+        if(t_name.getText().isEmpty() ){
+            cont++;
+            t_name.setBorder(new LineBorder(Color.red,1));
+        }
+        if(t_apellido.getText().isEmpty() ){
+            cont++;
+            t_apellido.setBorder(new LineBorder(Color.red,1));
+        }
+        if(t_dni.getText().isEmpty() ){
+            cont++;
+            t_dni.setBorder(new LineBorder(Color.red,1));
+        }
+        if(n_edad.getValue().toString().equals('0') ){
+            cont++;
+            n_edad.setBorder(new LineBorder(Color.red,1));
+        }
+        if(t_nacionalidad.getText().isEmpty() ){
+            cont++;
+            t_dni.setBorder(new LineBorder(Color.red,1));
+        }
+        if(c_fecha_nac.getDate().after(new Date())){
+            cont++;
+            c_fecha_nac.setBorder(new LineBorder(Color.red,1));
+        }
+        if(c_fecha_contrato.getDate().after(new Date())){
+            cont++;
+            c_fecha_nac.setBorder(new LineBorder(Color.red,1));
+        }
+
+        if (cont == 0 && !error) {
+            Empleado emple = new Empleado(t_name.getText(), t_apellido.getText(),t_dni.getText(),Integer.parseInt(n_edad.getValue().toString()), t_nacionalidad.getText(),c_fecha_nac.getDate(), c_fecha_contrato.getDate(),cb_cargo.getSelectedIndex());
+            ProyectoNetBean.insertEmpleado(emple);
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Revisa los datos");
+
+        }
+    }//GEN-LAST:event_b_anadirActionPerformed
+
+    private void t_dniFocusLost(java.awt.event.FocusEvent evt) throws SQLException {//GEN-FIRST:event_t_dniFocusLost
+        // TODO add your handling code here:
+        String dni = t_dni.getText();
+        error = ProyectoNetBean.getDni(dni);
+        if (error){
+            t_dni.setBorder(new LineBorder(Color.red,1));
+            t_dni.setText("DNI ya utilizado");
+            t_dni.setForeground(Color.red);
+
+        }
+    }//GEN-LAST:event_t_dniFocusLost
+
+    private void t_nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_nameActionPerformed
+        // TODO add your handling code here:
+        t_name.setBorder(new LineBorder(Color.black,1));
+
+    }//GEN-LAST:event_t_nameActionPerformed
+
+    private void t_apellidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_apellidoActionPerformed
+        // TODO add your handling code here:
+        t_apellido.setBorder(new LineBorder(Color.black,1));
+
+    }//GEN-LAST:event_t_apellidoActionPerformed
+
+    private void t_dniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_dniActionPerformed
+        // TODO add your handling code here:
+        t_dni.setBorder(new LineBorder(Color.black,1));
+
+    }//GEN-LAST:event_t_dniActionPerformed
+
+    private void n_edadMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_n_edadMouseClicked
+        // TODO add your handling code here:
+        n_edad.setBorder(new LineBorder(Color.black,1));
+
+    }//GEN-LAST:event_n_edadMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

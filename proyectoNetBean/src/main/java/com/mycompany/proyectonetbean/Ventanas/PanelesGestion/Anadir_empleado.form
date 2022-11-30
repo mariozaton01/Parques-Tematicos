@@ -147,6 +147,9 @@
           <Dimension value="[84, 22]"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="n_edadMouseClicked"/>
+      </Events>
     </Component>
     <Component class="com.toedter.calendar.JCalendar" name="c_fecha_nac">
     </Component>
@@ -215,19 +218,20 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="t_name">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="name"/>
-      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="t_nameActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="t_apellido">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="ape"/>
-      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="t_apellidoActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="t_dni">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="dni"/>
-      </Properties>
+      <Events>
+        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="t_dniFocusLost"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="t_dniActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="b_anadir">
       <Properties>
@@ -236,6 +240,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="A&#xf1;adir"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="b_anadirActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

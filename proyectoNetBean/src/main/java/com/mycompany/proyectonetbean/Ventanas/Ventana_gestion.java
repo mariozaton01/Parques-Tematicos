@@ -135,9 +135,19 @@ public class Ventana_gestion extends javax.swing.JFrame {
         m_empleado.add(ver_empleados);
 
         m_emple_anadir.setText("Añadir");
+        m_emple_anadir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                m_emple_anadirActionPerformed(evt);
+            }
+        });
         m_empleado.add(m_emple_anadir);
 
         m_emple_borrar.setText("Borrar");
+        m_emple_borrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                m_emple_borrarActionPerformed(evt);
+            }
+        });
         m_empleado.add(m_emple_borrar);
 
         jMenuBar1.add(m_empleado);
@@ -243,6 +253,28 @@ public class Ventana_gestion extends javax.swing.JFrame {
         desktop.revalidate();
         desktop.repaint();
     }//GEN-LAST:event_ver_empleadosActionPerformed
+
+    private void m_emple_anadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_emple_anadirActionPerformed
+        // TODO add your handling code here:
+        Anadir_empleado anadir_mepleado = new Anadir_empleado();
+        anadir_mepleado.setSize(1071,585);
+        anadir_mepleado.setLocation(0,0);
+        desktop.removeAll();
+        desktop.add(anadir_mepleado,BorderLayout.CENTER);
+        desktop.revalidate();
+        desktop.repaint();
+    }//GEN-LAST:event_m_emple_anadirActionPerformed
+
+    private void m_emple_borrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_emple_borrarActionPerformed
+        // TODO add your handling code here:
+        Borrar_empleado borrar_mepleado = new Borrar_empleado();
+        borrar_mepleado.setSize(1071,585);
+        borrar_mepleado.setLocation(0,0);
+        desktop.removeAll();
+        desktop.add(borrar_mepleado,BorderLayout.CENTER);
+        desktop.revalidate();
+        desktop.repaint();
+    }//GEN-LAST:event_m_emple_borrarActionPerformed
 
     /**
      * @param args the command line arguments

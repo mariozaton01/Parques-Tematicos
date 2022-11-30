@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -28,7 +30,8 @@ public class ProyectoNetBean {
     private static javax.swing.JFrame vAnterior;
     private static String chosenDb;
     private static Ventana_datos_parque v_datos_parque;
-    
+    private static Anadir_cliente_a_espectaculo v_cliente_espectaculo;
+
     public static void main(String[] args) {    
         //declaramos la ventana inicial
         vInicio = new Ventana_inicio();
@@ -138,7 +141,7 @@ public class ProyectoNetBean {
 
     }
     public static void getEmpleadostoComboBox(JComboBox<String> cb_empleados) {
-        String sql = "SELECT * from empleados where";
+        String sql = "SELECT * from empleados where cargo = 1";
         ResultSet result = null;
         try{
             result = Db.selects(sql, chosenDb);
@@ -202,7 +205,10 @@ public class ProyectoNetBean {
     }
 
     public static void insertEmpleado(Empleado emple){
-        String sql = "INSERT INTO empleados (nombre,apellido,dni,edad,fecha_nac,fecha_contrato,nacionalidad,cargo) VALUES ("+emple.getNombre()+", " +emple.getApellido()+", "+emple.getDni()+", "+emple.getEdad()+", "+emple.getFecha_nac()+", "+emple.getFecha_contrato()+", "+emple.getNacionalidad()+", "+emple.getCargo()+")";
+        LocalDate fecha_nac = emple.getFecha_nac().toInstant().atZone(ZoneId.of("Europe/Madrid")).toLocalDate();
+        LocalDate fecha_contrato = emple.getFecha_contrato().toInstant().atZone(ZoneId.of("Europe/Madrid")).toLocalDate();
+
+        String sql = "INSERT INTO empleados (nombre,apellido,dni,edad,fecha_nac,fecha_contrato,nacionalidad,cargo) VALUES ('"+emple.getNombre()+"', '" +emple.getApellido()+"', '"+emple.getDni()+"', '"+emple.getEdad()+"', '"+fecha_nac+"', '"+fecha_contrato+"', '"+emple.getNacionalidad()+"', '"+emple.getCargo()+"');";
         Db.inserts(sql,chosenDb);
     }
     public static void insertCliente(Cliente cliente){
@@ -233,7 +239,7 @@ public class ProyectoNetBean {
 
     }
     public static boolean getDni(String dni) throws SQLException {
-        String sql = "Select * from clientes where dni = '"+dni + "';";
+        String sql = "Select * from clientes as c, empleados e where c.dni = '"+dni + "' or e.dni = '"+dni+"';";
         ResultSet result = Db.selects(sql,chosenDb);
         Boolean error = false;
         if(!result.next()){
@@ -252,8 +258,11 @@ public class ProyectoNetBean {
 
     }
     public static void updateEmpleado(Empleado e) {
-        String sql = "UPDATE empleados set nombre = '"+e.getNombre()+"',apellido = '"+e.getApellido() +"',dni = '"+e.getDni()+ "',edad = '"+ e.getEdad() + "',fecha_nac = '"+e.getFecha_nac()+
-                "',fecha_contrato = '"+e.getFecha_contrato()+ "',nacionalidad = '"+e.getNacionalidad()+ "',cargo = '"+e.getCargo()+"' where id = '"+e.getId()+"');";
+        LocalDate fecha_nac = e.getFecha_nac().toInstant().atZone(ZoneId.of("Europe/Madrid")).toLocalDate();
+        LocalDate fecha_contrato = e.getFecha_contrato().toInstant().atZone(ZoneId.of("Europe/Madrid")).toLocalDate();
+        
+        String sql = "UPDATE empleados set nombre = '"+e.getNombre()+"',apellido = '"+e.getApellido() +"',dni = '"+e.getDni()+ "',edad = '"+ e.getEdad() + "',fecha_nac = '"+fecha_nac+
+                "',fecha_contrato = '"+fecha_contrato+ "',nacionalidad = '"+e.getNacionalidad()+ "',cargo = '"+e.getCargo()+"' where id = '"+e.getId()+"';";
         Db.updates(sql,chosenDb);
 
     }
@@ -277,5 +286,17 @@ public class ProyectoNetBean {
         }
 
         return  cliente;
+    }
+
+    public static void addClienteToEspectaculo(String idCliente, String idEspectaculo) {
+        String sql = "INSERT INTO RELACION VALUES('"+idCliente+"', '"+idEspectaculo+"');";
+        ResultSet result = null;
+        Db.inserts(sql, chosenDb);
+
+    }
+
+    public static void callAnadirClienteAEspectaculo(String id) {
+        v_cliente_espectaculo = new Anadir_cliente_a_espectaculo(id);
+        v_cliente_espectaculo.setVisible(true);
     }
 }
