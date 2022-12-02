@@ -1,21 +1,12 @@
 
 package com.mycompany.proyectonetbean;
 
-import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.regex.Pattern;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
+import javax.swing.*;
 
 import com.mycompany.proyectonetbean.Clases.*;
 import com.mycompany.proyectonetbean.Clases.Espectaculo;
@@ -30,7 +21,6 @@ public class ProyectoNetBean {
     private static javax.swing.JFrame vAnterior;
     private static String chosenDb;
     private static Ventana_datos_parque v_datos_parque;
-    private static Anadir_cliente_a_espectaculo v_cliente_espectaculo;
 
     public static void main(String[] args) {    
         //declaramos la ventana inicial
@@ -289,14 +279,103 @@ public class ProyectoNetBean {
     }
 
     public static void addClienteToEspectaculo(String idCliente, String idEspectaculo) {
-        String sql = "INSERT INTO RELACION VALUES('"+idCliente+"', '"+idEspectaculo+"');";
+        String selectEspectaculo = "SELECT aforo from espectaculos where id = '"+idEspectaculo+"';";
+        String selectCliente = "SELECT count(id) as total FROM espectaculo_clientes where id_cliente = '"+idCliente+"';";
+        String selectrepetido = "SELECT id_cliente, id_espectaculo FROM espectaculo_clientes where id_cliente = '"+idCliente+"' and id_espectaculo = '"+idEspectaculo+"';";
         ResultSet result = null;
-        Db.inserts(sql, chosenDb);
+        try {
+            result = Db.selects(selectrepetido , chosenDb);
+            if(!result.next()){
+
+                result = Db.selects(selectEspectaculo , chosenDb);
+                result.next();
+                int aforo = result.getInt("aforo");
+                result = Db.selects(selectCliente , chosenDb);
+                result.next();
+                int total = result.getInt("total");
+
+                if (total < aforo ){
+                    String sql = "INSERT INTO espectaculo_clientes(id_espectaculo, id_cliente)  VALUES('"+ idEspectaculo +"', '"+idCliente+"');";
+                    Db.inserts(sql, chosenDb);
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Aforo maximo alcanzado.");
+
+                }
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Este cliente ya está añadido.");
+
+            }
+
+        }
+        catch (Exception e){
+            System.out.println("Herror: "+ e.getMessage());
+        }
+
+
 
     }
 
-    public static void callAnadirClienteAEspectaculo(String id) {
-        v_cliente_espectaculo = new Anadir_cliente_a_espectaculo(id);
-        v_cliente_espectaculo.setVisible(true);
+    public static void getEspectaculosOfCliente(JList<String> l_espectaculos, String idCliente) {
+        String sql = "SELECT e.nombre as nombre, b.id_espectaculo as id FROM espectaculos as e inner join espectaculo_clientes as b on e.id = b.id_espectaculo where b.id_cliente = '"+idCliente + "'";
+        ResultSet result = null;
+
+        try{
+            result = Db.selects(sql,chosenDb);
+            DefaultListModel model = new DefaultListModel();
+            l_espectaculos.setModel(model);
+
+            while(result.next()){
+                model.addElement(result.getInt("id")+"-"+result.getString("nombre"));
+            }
+        }
+        catch (Exception e){
+            System.out.println("Ha ocurrido un error: "+ e.getMessage());
+
+        }
+    }
+
+
+    public static void getEspectaculoACargo(String id, JTextField text) {
+        String sql = "SELECT nombre FROM espectaculos where empleado_cargo = '"+id + "'";
+        ResultSet result = null;
+        try{
+            result = Db.selects(sql,chosenDb);
+
+            if (result.next()){
+                text.setText(result.getString("nombre"));
+            }else {
+                text.setText("--Sin asignar--");
+            }
+        }
+        catch (Exception e){
+            System.out.println("Ha ocurrido un error: "+ e.getMessage());
+
+        }
+    }
+
+    public static void setEmpleadoaCargo(String id, String idEspect) {
+        String sql = "UPDATE espectaculos set empleado_cargo = '"+id+"' where id = '"+idEspect+ "';";
+        Db.updates(sql,chosenDb);
+    }
+
+    public static void getClientesToList(String idEspectaculo, JList<String> l_clientes) {
+        String sql = "SELECT c.nombre as nombre, c.apellido as apellido FROM clientes as c inner join espectaculo_clientes as b on c.id = b.id_cliente where b.id_espectaculo = '"+idEspectaculo + "'";
+        ResultSet result = null;
+
+        try{
+            result = Db.selects(sql,chosenDb);
+            DefaultListModel model = new DefaultListModel();
+            l_clientes.setModel(model);
+
+            while(result.next()){
+                model.addElement(result.getString("nombre")+"-"+result.getString("apellido"));
+            }
+        }
+        catch (Exception e){
+            System.out.println("Ha ocurrido un error: "+ e.getMessage());
+
+        }
     }
 }
