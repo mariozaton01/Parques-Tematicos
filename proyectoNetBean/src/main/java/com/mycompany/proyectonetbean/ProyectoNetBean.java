@@ -8,8 +8,10 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import javax.swing.*;
 
+import com.db4o.ObjectSet;
 import com.mycompany.proyectonetbean.Clases.*;
 import com.mycompany.proyectonetbean.Clases.Espectaculo;
+import com.mycompany.proyectonetbean.DB.db4o;
 import com.mycompany.proyectonetbean.Ventanas.*;
 import com.mycompany.proyectonetbean.DB.Db;
 
@@ -90,292 +92,599 @@ public class ProyectoNetBean {
     }
 
     public static void getEspectaculostoComboBox(JComboBox<String> cb_espectaculos) {
-        String sql = "SELECT * from espectaculos;";
-        ResultSet result = null;
-        try{
-            result = Db.selects(sql, chosenDb);
+        if(chosenDb.equals("DB4o")){
+            try{
 
-            while(result.next()){
-                String nombre = result.getString("nombre");
-                String id = String.valueOf(result.getInt("id"));
-                System.out.println(nombre);
-                cb_espectaculos.addItem(id+"- " + nombre);
+                ArrayList<Espectaculo> espectaculos = db4o.selectEspectaculos( new Espectaculo());
 
+                for (Espectaculo espectaculo: espectaculos ) {
+                    String nombre = espectaculo.getNombre();
+                    String id = String.valueOf(espectaculo.getId());
+                    System.out.println(nombre);
+                    cb_espectaculos.addItem(id+"- " + nombre);
+                }
+
+            }catch (Exception e){
+                System.out.println("Error al mostrar los espectaculos");
+                System.out.println(e.getMessage());
             }
 
+
         }
-        catch (Exception e){
-            System.out.println("Error al mostrar la lista");
-            System.out.println(e.getMessage());
+        else{
+            String sql = "SELECT * from espectaculos;";
+            ResultSet result = null;
+            try{
+                result = Db.selects(sql, chosenDb);
+
+                while(result.next()){
+                    String nombre = result.getString("nombre");
+                    String id = String.valueOf(result.getInt("id"));
+                    System.out.println(nombre);
+                    cb_espectaculos.addItem(id+"- " + nombre);
+
+                }
+
+            }
+            catch (Exception e){
+                System.out.println("Error al mostrar la lista");
+                System.out.println(e.getMessage());
+            }
         }
+
 
     }
     public static void getClientestoComboBox(JComboBox<String> cb_clientes) {
-        String sql = "SELECT * from clientes";
-        ResultSet result = null;
-        try{
-            result = Db.selects(sql, chosenDb);
+        if(chosenDb.equals("DB4o")){
+            try{
+                Cliente c = new Cliente();
+                ArrayList<Cliente> clientes = db4o.selectClientes(c);
 
-            while(result.next()){
-                String nombre = result.getString("nombre");
-                String apellido = result.getString("apellido");
-                String id = String.valueOf(result.getInt("id"));
-                cb_clientes.addItem(id+"- " + nombre +" "+apellido);
+                for (Cliente cliente : clientes){
+
+                    String nombre = cliente.getNombre();
+                    String id = String.valueOf(cliente.getId());
+                    System.out.println(nombre);
+                    cb_clientes.addItem(id+"- " + nombre);
+                }
+
+            }catch (Exception e){
+                System.out.println("Error al mostrar los clientes");
+                System.out.println(e.getMessage());
             }
+        }
+        else{
+            String sql = "SELECT * from clientes";
+            ResultSet result = null;
+            try{
+                result = Db.selects(sql, chosenDb);
 
+                while(result.next()){
+                    String nombre = result.getString("nombre");
+                    String apellido = result.getString("apellido");
+                    String id = String.valueOf(result.getInt("id"));
+                    cb_clientes.addItem(id+"- " + nombre +" "+apellido);
+                }
+
+            }
+            catch (Exception e){
+                System.out.println("Error al mostrar la lista");
+                System.out.println(e.getMessage());
+            }
         }
-        catch (Exception e){
-            System.out.println("Error al mostrar la lista");
-            System.out.println(e.getMessage());
-        }
+
 
     }
     public static void getEmpleadostoComboBox(JComboBox<String> cb_empleados) {
-        String sql = "SELECT * from empleados where cargo = 1";
-        ResultSet result = null;
-        try{
-            result = Db.selects(sql, chosenDb);
 
-            while(result.next()){
-                String nombre = result.getString("nombre");
-                String apellido = result.getString("apellido");
-                String id = String.valueOf(result.getInt("id"));
+        if(chosenDb.equals("DB4o")){
+            try{
 
-                cb_empleados.addItem(id+"- " + nombre + " "+ apellido);
+                ArrayList<Empleado> empleados = db4o.selectEmpleados( new Empleado());
+
+                for (Empleado empleado : empleados){
+
+                    String nombre = empleado.getNombre();
+                    String apellido = empleado.getApellido();
+                    String id = String.valueOf(empleado.getId());
+                    System.out.println(nombre);
+
+                    cb_empleados.addItem(id+"- " + nombre + " "+ apellido);
+
+                }
+
+            }catch (Exception e){
+                System.out.println("Error al mostrar los empleados");
+                System.out.println(e.getMessage());
             }
+        }
+        else{
+            String sql = "SELECT * from empleados where cargo = 1";
+            ResultSet result = null;
+            try{
+                result = Db.selects(sql, chosenDb);
 
+                while(result.next()){
+                    String nombre = result.getString("nombre");
+                    String apellido = result.getString("apellido");
+                    String id = String.valueOf(result.getInt("id"));
+
+                    cb_empleados.addItem(id+"- " + nombre + " "+ apellido);
+                }
+
+            }
+            catch (Exception e){
+                System.out.println("Error al mostrar la lista");
+                System.out.println(e.getMessage());
+            }
         }
-        catch (Exception e){
-            System.out.println("Error al mostrar la lista");
-            System.out.println(e.getMessage());
-        }
+
 
     }
 
     public static Espectaculo getEspectaculoByID(String id) throws SQLException {
-        String sql = "Select * from espectaculos where id = "+id;
-        ResultSet result = null;
-        result = Db.selects(sql, chosenDb);
         Espectaculo espectaculo = new Espectaculo();
 
-        if (result.next()){
-            espectaculo.setNombre(result.getString("nombre"));
-            espectaculo.setAforo(result.getInt("aforo"));
-            espectaculo.setDescripcion(result.getString("descripcion"));
-            espectaculo.setLugar(result.getString("lugar"));
-            espectaculo.setCoste(result.getInt("coste"));
+        if(chosenDb.equals("DB4o")){
+            espectaculo.setId(id);
+
+            try{
+
+                Espectaculo espectaculoRes = db4o.selectEspectaculoById( espectaculo);
+                espectaculo  = espectaculoRes;
+
+
+            }catch (Exception e){
+                System.out.println("Error al recoger el espectaculo");
+                System.out.println(e.getMessage());
+            }
+
+
         }
+        else{
+            String sql = "Select * from espectaculos where id = "+id;
+            ResultSet result = null;
+            result = Db.selects(sql, chosenDb);
+
+            if (result.next()){
+                espectaculo.setNombre(result.getString("nombre"));
+                espectaculo.setAforo(result.getInt("aforo"));
+                espectaculo.setDescripcion(result.getString("descripcion"));
+                espectaculo.setLugar(result.getString("lugar"));
+                espectaculo.setCoste(result.getInt("coste"));
+            }
+        }
+
 
         return  espectaculo;
     }
     public static Empleado getEmpleadoByID(String id) throws SQLException {
-        String sql = "Select * from empleados where id = "+id;
-        ResultSet result = null;
-        result = Db.selects(sql, chosenDb);
         Empleado empleado = new Empleado();
 
-        if (result.next()){
-            empleado.setNombre(result.getString("nombre"));
-            empleado.setApellido(result.getString("apellido"));
-            empleado.setEdad(result.getInt("edad"));
-            empleado.setDni(result.getString("dni"));
-            empleado.setCargo(result.getInt("cargo"));
-            empleado.setNacionalidad(result.getString("nacionalidad"));
-            empleado.setFecha_nac(result.getDate("fecha_nac"));
-            empleado.setFecha_contrato(result.getDate("fecha_contrato"));
+        if(chosenDb.equals("DB4o")){
 
+            try{
+                empleado.setId(id);
+
+                Empleado empleadoRes = db4o.selectEmpleadoById(empleado);
+
+                empleado = empleadoRes;
+
+            }catch (Exception e){
+                System.out.println("Error al recoger el empleado");
+                System.out.println(e.getMessage());
+            }
+        }
+        else{
+            String sql = "Select * from empleados where id = "+id;
+            ResultSet result = null;
+            result = Db.selects(sql, chosenDb);
+
+            if (result.next()){
+                empleado.setNombre(result.getString("nombre"));
+                empleado.setApellido(result.getString("apellido"));
+                empleado.setEdad(result.getInt("edad"));
+                empleado.setDni(result.getString("dni"));
+                empleado.setCargo(result.getInt("cargo"));
+                empleado.setNacionalidad(result.getString("nacionalidad"));
+                empleado.setFecha_nac(result.getDate("fecha_nac"));
+                empleado.setFecha_contrato(result.getDate("fecha_contrato"));
+
+            }
         }
 
         return  empleado;
     }
 
     public static void insertEspectaculo(Espectaculo espectaculo){
-        String sql = "INSERT INTO espectaculos (nombre, aforo, descripcion, lugar,coste,empleado_cargo) VALUES('"+espectaculo.getNombre()+"', '" +espectaculo.getAforo()+"', '"+espectaculo.getDescripcion()+"', '"+espectaculo.getLugar()+"', '"+espectaculo.getCoste()+"',"+ null +")";
-        Db.inserts(sql,chosenDb);
+        if(chosenDb.equals("DB4o")){
+
+            db4o.InsertEspectaculo(espectaculo);
+        }
+        else{
+            String sql = "INSERT INTO espectaculos (nombre, aforo, descripcion, lugar,coste,empleado_cargo) VALUES('"+espectaculo.getNombre()+"', '" +espectaculo.getAforo()+"', '"+espectaculo.getDescripcion()+"', '"+espectaculo.getLugar()+"', '"+espectaculo.getCoste()+"',"+ null +")";
+            Db.inserts(sql,chosenDb);
+        }
+
     }
 
     public static void insertEmpleado(Empleado emple){
-        LocalDate fecha_nac = emple.getFecha_nac().toInstant().atZone(ZoneId.of("Europe/Madrid")).toLocalDate();
-        LocalDate fecha_contrato = emple.getFecha_contrato().toInstant().atZone(ZoneId.of("Europe/Madrid")).toLocalDate();
 
-        String sql = "INSERT INTO empleados (nombre,apellido,dni,edad,fecha_nac,fecha_contrato,nacionalidad,cargo) VALUES ('"+emple.getNombre()+"', '" +emple.getApellido()+"', '"+emple.getDni()+"', '"+emple.getEdad()+"', '"+fecha_nac+"', '"+fecha_contrato+"', '"+emple.getNacionalidad()+"', '"+emple.getCargo()+"');";
-        Db.inserts(sql,chosenDb);
+
+        if(chosenDb.equals("DB4o")){
+            db4o.InsertEmpleado(emple);
+
+        }
+        else{
+            LocalDate fecha_nac = emple.getFecha_nac().toInstant().atZone(ZoneId.of("Europe/Madrid")).toLocalDate();
+            LocalDate fecha_contrato = emple.getFecha_contrato().toInstant().atZone(ZoneId.of("Europe/Madrid")).toLocalDate();
+            String sql = "INSERT INTO empleados (nombre,apellido,dni,edad,fecha_nac,fecha_contrato,nacionalidad,cargo) VALUES ('"+emple.getNombre()+"', '" +emple.getApellido()+"', '"+emple.getDni()+"', '"+emple.getEdad()+"', '"+fecha_nac+"', '"+fecha_contrato+"', '"+emple.getNacionalidad()+"', '"+emple.getCargo()+"');";
+            Db.inserts(sql,chosenDb);
+        }
+
+
     }
     public static void insertCliente(Cliente cliente){
-        String sql = "INSERT INTO clientes (nombre,apellido,dni,edad) VALUES ('"+cliente.getNombre()+"', '" +cliente.getApellido()+"', '"+cliente.getDni()+"', '"+cliente.getEdad()+"')";
-        Db.inserts(sql,chosenDb);
+        if(chosenDb.equals("DB4o")){
+            db4o.InsertCliente(cliente);
+
+        }
+        else{
+            String sql = "INSERT INTO clientes (nombre,apellido,dni,edad) VALUES ('"+cliente.getNombre()+"', '" +cliente.getApellido()+"', '"+cliente.getDni()+"', '"+cliente.getEdad()+"')";
+            Db.inserts(sql,chosenDb);
+        }
+
     }
 
     public static void deleteEspectaculo(String id) {
-        String sql = "DELETE FROM espectaculos where id = '"+id+"'";
-        Db.deletes(sql,chosenDb);
+        if(chosenDb.equals("DB4o")){
+            Espectaculo espectaculo = new Espectaculo();
+            espectaculo.setId(id);
+
+            db4o.deleteEspectaculo(espectaculo);
+
+        }
+        else{
+            String sql = "DELETE FROM espectaculos where id = '"+id+"'";
+            Db.deletes(sql,chosenDb);
+        }
+
 
     }
     public static void deleteCliente(String id) {
-        String sql = "DELETE FROM clientes where id = '"+id+"'";
-        Db.deletes(sql,chosenDb);
+        if(chosenDb.equals("DB4o")){
+            Cliente cliente = new Cliente();
+            cliente.setId(id);
+            db4o.deleteCliente(cliente);
+
+        }
+        else{
+            String sql = "DELETE FROM clientes where id = '"+id+"'";
+            Db.deletes(sql,chosenDb);
+        }
+
     }
     public static void deleteEmpleado(String id) {
-        String sql = "DELETE FROM empleados where id = '"+id+"'";
-        Db.deletes(sql,chosenDb);
+        if(chosenDb.equals("DB4o")){
+            Empleado empleado = new Empleado();
+            empleado.setId(id);
+            db4o.deleteEmpleado(empleado);
+        }
+        else{
+            String sql = "DELETE FROM empleados where id = '"+id+"'";
+            Db.deletes(sql,chosenDb);
+        }
+
 
     }
     public static ArrayList<String> getBDdata(){
-        String sql = "SELECT * FROM parque;";
-        ArrayList<String> dataDb = Db.bdinfo(sql,chosenDb);
+        ArrayList<String> dataDb = null;
+        if(chosenDb.equals("DB4o")){
+            ObjectSet resultado = null;
+           resultado = db4o.selectParque(new Parque());
+           if (resultado.hasNext()){
+               Parque parque = (Parque) resultado.next();
+
+
+               dataDb.add("parques");
+               dataDb.add(parque.getNombre());
+               dataDb.add(parque.getApertura().toString());
+               dataDb.add(parque.getDireccion());
+               dataDb.add("-----");
+               dataDb.add("C:\\xampp\\htdocs\\bd\\parques.yap");
+               dataDb.add("----");
+
+           }
+
+        }
+        else{
+            String sql = "SELECT * FROM parque;";
+            dataDb = Db.bdinfo(sql,chosenDb);
+        }
+
 
         return dataDb;
 
 
     }
     public static boolean getDni(String dni) throws SQLException {
-        String sql = "Select * from clientes as c, empleados e where c.dni = '"+dni + "' or e.dni = '"+dni+"';";
-        ResultSet result = Db.selects(sql,chosenDb);
         Boolean error = false;
-        if(!result.next()){
-            error = false;
+
+        if(chosenDb.equals("DB4o")){
+
+            try{
+                Cliente cliente = new Cliente();
+                cliente.setDni(dni);
+                cliente = db4o.selectClienteById(cliente);
+
+                Empleado empleado = new Empleado();
+                empleado.setDni(dni);
+                empleado = db4o.selectEmpleadoById(empleado);
+
+                if(!cliente.getDni().equals("") && !empleado.getDni().equals("")){
+                    return false;
+                }
+                else{
+                    return true;
+                }
+            }catch (Exception e){
+
+            }
+
+
         }
-        else {
-            error = true;
+        else{
+            String sql = "Select * from clientes as c, empleados e where c.dni = '"+dni + "' or e.dni = '"+dni+"';";
+            ResultSet result = Db.selects(sql,chosenDb);
+            if(!result.next()){
+                error = false;
+            }
+            else {
+                error = true;
+            }
         }
+
         return error;
 
     }
 
     public static void updateCliente(Cliente c) {
-        String sql = "UPDATE clientes set nombre = '"+c.getNombre()+"',apellido = '"+c.getApellido() + "',edad = '"+ c.getEdad() + "' where id = '"+c.getId()+"';";
-        Db.updates(sql,chosenDb);
+        if(chosenDb.equals("DB4o")){
+            db4o.InsertCliente(c);
+
+        }
+        else{
+            String sql = "UPDATE clientes set nombre = '"+c.getNombre()+"',apellido = '"+c.getApellido() + "',edad = '"+ c.getEdad() + "' where id = '"+c.getId()+"';";
+            Db.updates(sql,chosenDb);
+        }
+
 
     }
     public static void updateEmpleado(Empleado e) {
         LocalDate fecha_nac = e.getFecha_nac().toInstant().atZone(ZoneId.of("Europe/Madrid")).toLocalDate();
         LocalDate fecha_contrato = e.getFecha_contrato().toInstant().atZone(ZoneId.of("Europe/Madrid")).toLocalDate();
-        
-        String sql = "UPDATE empleados set nombre = '"+e.getNombre()+"',apellido = '"+e.getApellido() +"',dni = '"+e.getDni()+ "',edad = '"+ e.getEdad() + "',fecha_nac = '"+fecha_nac+
-                "',fecha_contrato = '"+fecha_contrato+ "',nacionalidad = '"+e.getNacionalidad()+ "',cargo = '"+e.getCargo()+"' where id = '"+e.getId()+"';";
-        Db.updates(sql,chosenDb);
+
+        if(chosenDb.equals("DB4o")){
+            db4o.InsertEmpleado(e);
+
+        }
+        else{
+            String sql = "UPDATE empleados set nombre = '"+e.getNombre()+"',apellido = '"+e.getApellido() +"',dni = '"+e.getDni()+ "',edad = '"+ e.getEdad() + "',fecha_nac = '"+fecha_nac+
+                    "',fecha_contrato = '"+fecha_contrato+ "',nacionalidad = '"+e.getNacionalidad()+ "',cargo = '"+e.getCargo()+"' where id = '"+e.getId()+"';";
+            Db.updates(sql,chosenDb);
+        }
+
 
     }
 
     public static void updateEspectaculo(Espectaculo e) {
-        String sql = "UPDATE espectaculos set nombre = '"+e.getNombre() + "',aforo = '"+ e.getAforo()+ "',descripcion = '"+ e.getDescripcion()+"',lugar = '"+e.getLugar()+  "',coste = '"+ e.getCoste()+ "' where id = '"+e.getId()+"';";
-        Db.updates(sql,chosenDb);
+        if(chosenDb.equals("DB4o")){
+            db4o.InsertEspectaculo(e);
+        }
+        else{
+            String sql = "UPDATE espectaculos set nombre = '"+e.getNombre() + "',aforo = '"+ e.getAforo()+ "',descripcion = '"+ e.getDescripcion()+"',lugar = '"+e.getLugar()+  "',coste = '"+ e.getCoste()+ "' where id = '"+e.getId()+"';";
+            Db.updates(sql,chosenDb);
+        }
+
     }
 
     public static Cliente getClienteByID(String id) throws SQLException {
-        String sql = "Select * from clientes where id = "+id;
-        ResultSet result = null;
-        result = Db.selects(sql, chosenDb);
         Cliente cliente = new Cliente();
 
-        if (result.next()){
-            cliente.setNombre(result.getString("nombre"));
-            cliente.setApellido(result.getString("apellido"));
-            cliente.setDni(result.getString("dni"));
-            cliente.setEdad(result.getInt("edad"));
+        if(chosenDb.equals("DB4o")){
+            cliente.setId(id);
+            cliente = db4o.selectClienteById(cliente);
+
         }
+        else{
+            String sql = "Select * from clientes where id = "+id;
+            ResultSet result = null;
+            result = Db.selects(sql, chosenDb);
+
+            if (result.next()){
+                cliente.setNombre(result.getString("nombre"));
+                cliente.setApellido(result.getString("apellido"));
+                cliente.setDni(result.getString("dni"));
+                cliente.setEdad(result.getInt("edad"));
+            }
+        }
+
 
         return  cliente;
     }
 
     public static void addClienteToEspectaculo(String idCliente, String idEspectaculo) {
-        String selectEspectaculo = "SELECT aforo from espectaculos where id = '"+idEspectaculo+"';";
-        String selectCliente = "SELECT count(id) as total FROM espectaculo_clientes where id_cliente = '"+idCliente+"';";
-        String selectrepetido = "SELECT id_cliente, id_espectaculo FROM espectaculo_clientes where id_cliente = '"+idCliente+"' and id_espectaculo = '"+idEspectaculo+"';";
-        ResultSet result = null;
-        try {
-            result = Db.selects(selectrepetido , chosenDb);
-            if(!result.next()){
+        if(chosenDb.equals("DB4o")){
 
-                result = Db.selects(selectEspectaculo , chosenDb);
-                result.next();
-                int aforo = result.getInt("aforo");
-                result = Db.selects(selectCliente , chosenDb);
-                result.next();
-                int total = result.getInt("total");
+            RelacionEspectaculosClientes clienteRepetido = new RelacionEspectaculosClientes();
+            clienteRepetido.setId_cliente(idCliente);
+            RelacionEspectaculosClientes clienteRep = db4o.getRelacionRepetido(clienteRepetido);
 
-                if (total < aforo ){
-                    String sql = "INSERT INTO espectaculo_clientes(id_espectaculo, id_cliente)  VALUES('"+ idEspectaculo +"', '"+idCliente+"');";
-                    Db.inserts(sql, chosenDb);
+            if (clienteRep == null){
+                Espectaculo espectaculo = new Espectaculo();
+                espectaculo.setId(idEspectaculo);
+                Espectaculo aforoResultado=  db4o.selectEspectaculoById(espectaculo);
+
+
+                RelacionEspectaculosClientes totalClientes = new RelacionEspectaculosClientes();
+                totalClientes.setId_espectaculo(idEspectaculo);
+                ArrayList<RelacionEspectaculosClientes> total = db4o.getRelacionAforo(totalClientes);
+
+                if(total.size() >= espectaculo.getAforo()){
+                    JOptionPane.showMessageDialog(null, "Limite de aforo alcanzado.");
+
                 }
                 else{
-                    JOptionPane.showMessageDialog(null, "Aforo maximo alcanzado.");
+                    RelacionEspectaculosClientes newCliente = new RelacionEspectaculosClientes();
+                    newCliente.setId_cliente(idCliente);
+                    newCliente.setId_espectaculo(idEspectaculo);
+                    db4o.setRelacion(newCliente);
 
                 }
+
+
             }
             else{
                 JOptionPane.showMessageDialog(null, "Este cliente ya está añadido.");
-
             }
 
         }
-        catch (Exception e){
-            System.out.println("Herror: "+ e.getMessage());
+        else{
+            String selectEspectaculo = "SELECT aforo from espectaculos where id = '"+idEspectaculo+"';";
+            String selectCliente = "SELECT count(id) as total FROM espectaculo_clientes where id_cliente = '"+idCliente+"';";
+            String selectrepetido = "SELECT id_cliente, id_espectaculo FROM espectaculo_clientes where id_cliente = '"+idCliente+"' and id_espectaculo = '"+idEspectaculo+"';";
+            ResultSet result = null;
+            try {
+                result = Db.selects(selectrepetido , chosenDb);
+                if(!result.next()){
+
+                    result = Db.selects(selectEspectaculo , chosenDb);
+                    result.next();
+                    int aforo = result.getInt("aforo");
+                    result = Db.selects(selectCliente , chosenDb);
+                    result.next();
+                    int total = result.getInt("total");
+
+                    if (total < aforo ){
+                        String sql = "INSERT INTO espectaculo_clientes(id_espectaculo, id_cliente)  VALUES('"+ idEspectaculo +"', '"+idCliente+"');";
+                        Db.inserts(sql, chosenDb);
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "Aforo maximo alcanzado.");
+
+                    }
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Este cliente ya está añadido.");
+
+                }
+
+            }
+            catch (Exception e){
+                System.out.println("Herror: "+ e.getMessage());
+            }
         }
-
-
 
     }
 
     public static void getEspectaculosOfCliente(JList<String> l_espectaculos, String idCliente) {
-        String sql = "SELECT e.nombre as nombre, b.id_espectaculo as id FROM espectaculos as e inner join espectaculo_clientes as b on e.id = b.id_espectaculo where b.id_cliente = '"+idCliente + "'";
-        ResultSet result = null;
+        if(chosenDb.equals("DB4o")){
+            RelacionEspectaculosClientes espesctaculosDeCliente = new RelacionEspectaculosClientes();
+            espesctaculosDeCliente.setId_cliente(idCliente);
+            ArrayList<RelacionEspectaculosClientes> listaEspectaculos = db4o.getRelacionAforo(espesctaculosDeCliente);
 
-        try{
-            result = Db.selects(sql,chosenDb);
             DefaultListModel model = new DefaultListModel();
             l_espectaculos.setModel(model);
 
-            while(result.next()){
-                model.addElement(result.getInt("id")+"-"+result.getString("nombre"));
+            for (RelacionEspectaculosClientes espectaculo : listaEspectaculos){
+                Espectaculo espec = new Espectaculo();
+                espec.setId(espectaculo.getId());
+                espec = db4o.selectEspectaculoById(espec);
+                model.addElement(espec.getId()+"-"+espec.getNombre());
+
             }
-        }
-        catch (Exception e){
-            System.out.println("Ha ocurrido un error: "+ e.getMessage());
+
 
         }
+        else{
+            String sql = "SELECT e.nombre as nombre, b.id_espectaculo as id FROM espectaculos as e inner join espectaculo_clientes as b on e.id = b.id_espectaculo where b.id_cliente = '"+idCliente + "'";
+            ResultSet result = null;
+
+            try{
+                result = Db.selects(sql,chosenDb);
+                DefaultListModel model = new DefaultListModel();
+                l_espectaculos.setModel(model);
+
+                while(result.next()){
+                    model.addElement(result.getInt("id")+"-"+result.getString("nombre"));
+                }
+            }
+            catch (Exception e){
+                System.out.println("Ha ocurrido un error: "+ e.getMessage());
+
+            }
+        }
+
     }
 
 
     public static void getEspectaculoACargo(String id, JTextField text) {
-        String sql = "SELECT nombre FROM espectaculos where empleado_cargo = '"+id + "'";
-        ResultSet result = null;
-        try{
-            result = Db.selects(sql,chosenDb);
+        if(chosenDb.equals("DB4o")){
+        //todo
+        }
+        else{
+            String sql = "SELECT nombre FROM espectaculos where empleado_cargo = '"+id + "'";
+            ResultSet result = null;
+            try{
+                result = Db.selects(sql,chosenDb);
 
-            if (result.next()){
-                text.setText(result.getString("nombre"));
-            }else {
-                text.setText("--Sin asignar--");
+                if (result.next()){
+                    text.setText(result.getString("nombre"));
+                }else {
+                    text.setText("--Sin asignar--");
+                }
+            }
+            catch (Exception e){
+                System.out.println("Ha ocurrido un error: "+ e.getMessage());
+
             }
         }
-        catch (Exception e){
-            System.out.println("Ha ocurrido un error: "+ e.getMessage());
 
-        }
     }
 
     public static void setEmpleadoaCargo(String id, String idEspect) {
-        String sql = "UPDATE espectaculos set empleado_cargo = '"+id+"' where id = '"+idEspect+ "';";
-        Db.updates(sql,chosenDb);
+        if(chosenDb.equals("DB4o")){
+
+        }
+        else{
+            String sql = "UPDATE espectaculos set empleado_cargo = '"+id+"' where id = '"+idEspect+ "';";
+            Db.updates(sql,chosenDb);
+        }
+
     }
 
     public static void getClientesToList(String idEspectaculo, JList<String> l_clientes) {
-        String sql = "SELECT c.nombre as nombre, c.apellido as apellido FROM clientes as c inner join espectaculo_clientes as b on c.id = b.id_cliente where b.id_espectaculo = '"+idEspectaculo + "'";
-        ResultSet result = null;
+        if(chosenDb.equals("DB4o")){
 
-        try{
-            result = Db.selects(sql,chosenDb);
-            DefaultListModel model = new DefaultListModel();
-            l_clientes.setModel(model);
+        }
+        else{
+            String sql = "SELECT c.nombre as nombre, c.apellido as apellido FROM clientes as c inner join espectaculo_clientes as b on c.id = b.id_cliente where b.id_espectaculo = '"+idEspectaculo + "'";
+            ResultSet result = null;
 
-            while(result.next()){
-                model.addElement(result.getString("nombre")+"-"+result.getString("apellido"));
+            try{
+                result = Db.selects(sql,chosenDb);
+                DefaultListModel model = new DefaultListModel();
+                l_clientes.setModel(model);
+
+                while(result.next()){
+                    model.addElement(result.getString("nombre")+"-"+result.getString("apellido"));
+                }
+            }
+            catch (Exception e){
+                System.out.println("Ha ocurrido un error: "+ e.getMessage());
+
             }
         }
-        catch (Exception e){
-            System.out.println("Ha ocurrido un error: "+ e.getMessage());
 
-        }
     }
 }

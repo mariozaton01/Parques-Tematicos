@@ -68,7 +68,7 @@ public class Ventana_inicio extends javax.swing.JFrame {
         });
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel2.setText("MySQLi");
+        jLabel2.setText("DB4o");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel3.setText("MySQL");
@@ -150,7 +150,7 @@ public class Ventana_inicio extends javax.swing.JFrame {
 
     private void b_islaMagicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_islaMagicaActionPerformed
         // TODO add your handling code here:
-        ProyectoNetBean.chooseDB("SQLLite");
+        ProyectoNetBean.chooseDB("DB4o");
 
     }//GEN-LAST:event_b_islaMagicaActionPerformed
 

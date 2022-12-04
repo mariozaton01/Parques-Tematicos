@@ -321,6 +321,7 @@ public class Ver_espectaculo extends javax.swing.JPanel {
             n_aforo.setValue( espectaculo.getAforo());
             n_coste.setValue( espectaculo.getCoste());
 
+            cb_empleado.removeAllItems();
             ProyectoNetBean.getEmpleadostoComboBox(cb_empleado);
 
             ProyectoNetBean.getClientesToList(id, l_clientes);

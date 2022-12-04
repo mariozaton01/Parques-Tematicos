@@ -313,6 +313,7 @@ public class Ver_cliente extends javax.swing.JPanel {
             String selectedValue = cb_cliente.getSelectedItem().toString();
             String id = selectedValue.split("-")[0];
             Cliente cliente = ProyectoNetBean.getClienteByID(id);
+            System.out.println(cliente.getApellido());
 
             ProyectoNetBean.getEspectaculosOfCliente(l_espectaculos,id);
 
