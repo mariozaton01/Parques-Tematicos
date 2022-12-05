@@ -421,14 +421,17 @@ public class ProyectoNetBean {
                 empleado.setDni(dni);
                 empleado = db4o.selectEmpleadoById(empleado);
 
-                if(!cliente.getDni().equals("") && !empleado.getDni().equals("")){
+                if(cliente == null && empleado == null){
+
                     return false;
                 }
                 else{
+                    System.out.println("Entra");
+
                     return true;
                 }
             }catch (Exception e){
-
+                System.out.println("ERROR"+ e.getMessage());
             }
 
 
@@ -450,7 +453,7 @@ public class ProyectoNetBean {
 
     public static void updateCliente(Cliente c) {
         if(chosenDb.equals("DB4o")){
-            db4o.InsertCliente(c);
+            db4o.updateCliente(c);
 
         }
         else{
@@ -465,7 +468,7 @@ public class ProyectoNetBean {
         LocalDate fecha_contrato = e.getFecha_contrato().toInstant().atZone(ZoneId.of("Europe/Madrid")).toLocalDate();
 
         if(chosenDb.equals("DB4o")){
-            db4o.InsertEmpleado(e);
+            db4o.updateEmpleado(e);
 
         }
         else{
@@ -479,7 +482,7 @@ public class ProyectoNetBean {
 
     public static void updateEspectaculo(Espectaculo e) {
         if(chosenDb.equals("DB4o")){
-            db4o.InsertEspectaculo(e);
+            db4o.updateEspectaculo(e);
         }
         else{
             String sql = "UPDATE espectaculos set nombre = '"+e.getNombre() + "',aforo = '"+ e.getAforo()+ "',descripcion = '"+ e.getDescripcion()+"',lugar = '"+e.getLugar()+  "',coste = '"+ e.getCoste()+ "' where id = '"+e.getId()+"';";
@@ -529,8 +532,8 @@ public class ProyectoNetBean {
                 RelacionEspectaculosClientes totalClientes = new RelacionEspectaculosClientes();
                 totalClientes.setId_espectaculo(idEspectaculo);
                 ArrayList<RelacionEspectaculosClientes> total = db4o.getRelacionAforo(totalClientes);
-
-                if(total.size() >= espectaculo.getAforo()){
+                System.out.println("size " + aforoResultado.getAforo());
+                if(total.size() >= aforoResultado.getAforo()){
                     JOptionPane.showMessageDialog(null, "Limite de aforo alcanzado.");
 
                 }
@@ -631,6 +634,17 @@ public class ProyectoNetBean {
     public static void getEspectaculoACargo(String id, JTextField text) {
         if(chosenDb.equals("DB4o")){
         //todo
+            Espectaculo espectaculo  =new Espectaculo();
+            espectaculo.setEmpleado_cargo(id);
+            espectaculo = db4o.selectEspectaculoById(espectaculo);
+
+            if(espectaculo != null){
+                text.setText(espectaculo.getNombre());
+            }
+            else{
+                text.setText("--Sin asignar--");
+
+            }
         }
         else{
             String sql = "SELECT nombre FROM espectaculos where empleado_cargo = '"+id + "'";
@@ -654,7 +668,12 @@ public class ProyectoNetBean {
 
     public static void setEmpleadoaCargo(String id, String idEspect) {
         if(chosenDb.equals("DB4o")){
-
+            Espectaculo espectaculo = new Espectaculo();
+            espectaculo.setId(idEspect);
+            espectaculo = db4o.selectEspectaculoById(espectaculo);
+            espectaculo.setEmpleado_cargo(id);
+            System.out.println(id +" " + idEspect);
+            db4o.updateEspectaculo(espectaculo);
         }
         else{
             String sql = "UPDATE espectaculos set empleado_cargo = '"+id+"' where id = '"+idEspect+ "';";
@@ -666,6 +685,20 @@ public class ProyectoNetBean {
     public static void getClientesToList(String idEspectaculo, JList<String> l_clientes) {
         if(chosenDb.equals("DB4o")){
 
+            RelacionEspectaculosClientes espectaculo = new RelacionEspectaculosClientes();
+            espectaculo.setId_cliente(idEspectaculo);
+            ArrayList<RelacionEspectaculosClientes> listaEspectaculos = db4o.getRelacionAforo(espectaculo);
+
+            DefaultListModel model = new DefaultListModel();
+            l_clientes.setModel(model);
+
+            for (RelacionEspectaculosClientes e : listaEspectaculos){
+                Cliente c = new Cliente();
+                c.setId(e.getId_cliente());
+                c = db4o.selectClienteById(c);
+                model.addElement(c.getId()+"-"+c.getNombre());
+
+            }
         }
         else{
             String sql = "SELECT c.nombre as nombre, c.apellido as apellido FROM clientes as c inner join espectaculo_clientes as b on c.id = b.id_cliente where b.id_espectaculo = '"+idEspectaculo + "'";

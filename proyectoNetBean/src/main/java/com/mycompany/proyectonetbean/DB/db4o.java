@@ -10,6 +10,7 @@ import org.boon.Str;
 import org.boon.core.Sys;
 
 import javax.swing.*;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 
 public class db4o {
@@ -35,6 +36,30 @@ public class db4o {
         }
         catch (Exception e){
             JOptionPane.showMessageDialog(null, "Error al insertar cliente");
+
+        }
+
+    }
+    public static void updateCliente(Cliente cliente){
+        try{
+            open();
+
+            ObjectSet result =  con.queryByExample(cliente);
+
+            if (result.hasNext()){
+                Cliente e = (Cliente) result.next();
+                e.setNombre(cliente.getNombre());
+                con.store(e);
+
+            }
+
+            con.close();
+
+            JOptionPane.showMessageDialog(null, "Actualizado");
+
+        }
+        catch (Exception e){
+            JOptionPane.showMessageDialog(null, "Error al actualizar cliente");
 
         }
 
@@ -114,6 +139,28 @@ public class db4o {
         }
 
     }
+    public static void updateEmpleado(Empleado empleado){
+        try{
+
+            open();
+
+            ObjectSet result =  con.queryByExample(empleado);
+
+            if (result.hasNext()){
+                Empleado e = (Empleado) result.next();
+                con.store(empleado);
+
+            }
+            con.close();
+            JOptionPane.showMessageDialog(null, "Insertado");
+
+        }
+        catch (Exception e){
+            JOptionPane.showMessageDialog(null, "Error al insertar empleado");
+
+        }
+
+    }
     public static void InsertEspectaculo(Espectaculo espectaculo){
         try{
 
@@ -123,6 +170,28 @@ public class db4o {
             id++;
 
             con.store(espectaculo);
+            con.close();
+            JOptionPane.showMessageDialog(null, "Insertado");
+
+        }
+        catch (Exception e){
+            JOptionPane.showMessageDialog(null, "parques.db4o");
+
+        }
+
+    }
+    public static void updateEspectaculo(Espectaculo espectaculo){
+        try{
+
+            open();
+
+            ObjectSet result =  con.queryByExample(espectaculo);
+
+            if (result.hasNext()){
+                Espectaculo e = (Espectaculo) result.next();
+                con.store(espectaculo);
+
+            }
             con.close();
             JOptionPane.showMessageDialog(null, "Insertado");
 
@@ -145,6 +214,9 @@ public class db4o {
                 c = (Cliente) result.next();
                 System.out.println(c.getNombre() + c.getId());
             }
+            else {
+                c = null;
+            }
             con.close();
 
             return  c;
@@ -157,15 +229,19 @@ public class db4o {
     }
     public static Empleado selectEmpleadoById(Empleado empleado){
         try{
+            Empleado e = new Empleado();
+
             open();
 
             ObjectSet result = null;
 
 
             result = con.queryByExample(empleado);
-            Empleado e = new Empleado();
             if(result.hasNext()){
                 e = (Empleado) result.next();
+            }
+            else{
+                e = null;
             }
             con.close();
 
@@ -179,15 +255,19 @@ public class db4o {
     }
     public static Espectaculo selectEspectaculoById(Espectaculo espectaculo){
         try{
+            Espectaculo e = new Espectaculo();
+
             open();
 
             ObjectSet result = null;
 
 
             result = con.queryByExample(espectaculo);
-            Espectaculo e = new Espectaculo();
             if(result.hasNext()){
                 e = (Espectaculo) result.next();
+            }
+            else{
+                e = null;
             }
             con.close();
 
@@ -205,7 +285,13 @@ public class db4o {
 
             open();
 
-            con.delete(espectaculo);
+            ObjectSet result =  con.queryByExample(espectaculo);
+
+            if (result.hasNext()){
+                Espectaculo e = (Espectaculo) result.next();
+                con.delete(e);
+
+            }
             con.close();
 
         }
@@ -219,8 +305,13 @@ public class db4o {
         try{
             open();
 
+            ObjectSet result =  con.queryByExample(cliente);
 
-            con.delete(cliente);
+            if (result.hasNext()){
+                Cliente c = (Cliente) result.next();
+                con.delete(c);
+
+            }
             con.close();
 
         }
@@ -234,9 +325,14 @@ public class db4o {
         try{
             open();
 
+            ObjectSet result =  con.queryByExample(empleado);
 
-            con.delete(empleado);
-            //con.close();
+            if (result.hasNext()){
+                Empleado e = (Empleado) result.next();
+                con.delete(e);
+
+            }
+            con.close();
 
         }
         catch (Exception e){
@@ -247,12 +343,12 @@ public class db4o {
     }
 
     public static ArrayList<RelacionEspectaculosClientes> getRelacionAforo(RelacionEspectaculosClientes clienteRepetido) {
+        ArrayList<RelacionEspectaculosClientes> aforo = new ArrayList<RelacionEspectaculosClientes>();
+
         open();
 
         ObjectSet result = con.queryByExample(clienteRepetido);
-        RelacionEspectaculosClientes rel = new RelacionEspectaculosClientes();
 
-        ArrayList<RelacionEspectaculosClientes> aforo = new ArrayList<RelacionEspectaculosClientes>();
         while(result.hasNext()){
             aforo.add ((RelacionEspectaculosClientes) result.next());
         }
@@ -278,13 +374,16 @@ public class db4o {
     }
 
     public static RelacionEspectaculosClientes getRelacionRepetido(RelacionEspectaculosClientes clienteRepetido) {
+        RelacionEspectaculosClientes rel = new RelacionEspectaculosClientes();
+
         open();
 
         ObjectSet result = con.queryByExample(clienteRepetido);
-        RelacionEspectaculosClientes rel = new RelacionEspectaculosClientes();
 
         if(result.hasNext()){
             rel= ((RelacionEspectaculosClientes) result.next());
+        }else{
+            rel = null;
         }
         con.close();
         return  rel;

@@ -16,6 +16,7 @@ public class Espectaculo {
     private String descripcion;
     private String lugar;
     private int coste;
+    private String empleado_cargo;
 
     public Espectaculo(String nombre, int aforo, String descripcion, String lugar, int coste){
         this.nombre = nombre;
@@ -76,5 +77,13 @@ public class Espectaculo {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getEmpleado_cargo() {
+        return empleado_cargo;
+    }
+
+    public void setEmpleado_cargo(String empleado_cargo) {
+        this.empleado_cargo = empleado_cargo;
     }
 }
