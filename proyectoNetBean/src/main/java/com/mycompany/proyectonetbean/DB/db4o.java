@@ -1,17 +1,13 @@
 package com.mycompany.proyectonetbean.DB;
 
-import EDU.purdue.cs.bloat.util.ResizeableArrayList;
 import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
 import com.mycompany.proyectonetbean.Clases.*;
-import com.db4o.query.Predicate;
-import org.boon.Str;
-import org.boon.core.Sys;
 
 import javax.swing.*;
-import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class db4o {
     static ObjectContainer con;
@@ -19,6 +15,8 @@ public class db4o {
 
     private static void open(){
          con = Db4oEmbedded.openFile("parques.db4o");
+
+
 
     }
 
@@ -44,11 +42,16 @@ public class db4o {
         try{
             open();
 
-            ObjectSet result =  con.queryByExample(cliente);
+            Cliente c = new Cliente();
+            c.setId(cliente.getId());
+            ObjectSet result =  con.queryByExample(c);
 
             if (result.hasNext()){
                 Cliente e = (Cliente) result.next();
                 e.setNombre(cliente.getNombre());
+                e.setApellido(cliente.getApellido());
+                e.setEdad(cliente.getEdad());
+
                 con.store(e);
 
             }
@@ -105,19 +108,37 @@ public class db4o {
         con.close();
         return  lista;
     }
-    public static ObjectSet selectParque(Parque parque) {
+    public static void insertParque(){
+        try{
 
+            open();
+            Parque p  = new Parque();
+            p.setNombre("Isla Magica");
+            p.setAforo(100);
+            p.setApertura(new Date());
+            p.setDireccion("Direccion parque db4o");
+            con.store(p);
+            con.close();
+
+        }
+        catch (Exception e){
+            JOptionPane.showMessageDialog(null, "parques.db4o");
+
+        }
+
+    }
+    public static Parque selectParque(Parque parque) {
+        Parque p = null;
         open();
 
         ObjectSet result = con.queryByExample(parque);
 
-        ArrayList<Cliente> lista = new ArrayList<Cliente>();
-        while (result.hasNext()){
-            lista.add((Cliente) result.next());
+        if (result.hasNext()){
+             p = (Parque) result.next();
         }
         con.close();
 
-        return  result;
+        return  p;
     }
 
     public static void InsertEmpleado(Empleado empleado){
@@ -144,15 +165,25 @@ public class db4o {
 
             open();
 
+            Empleado emple = new Empleado();
+            emple.setId(empleado.getId());
             ObjectSet result =  con.queryByExample(empleado);
 
             if (result.hasNext()){
                 Empleado e = (Empleado) result.next();
+                e.setNombre(empleado.getNombre());
+                e.setApellido(empleado.getApellido());
+                e.setEdad(empleado.getEdad());
+                e.setCargo(empleado.getCargo());
+                e.setFecha_contrato(empleado.getFecha_contrato());
+                e.setFecha_nac(empleado.getFecha_nac());
+                e.setNacionalidad(empleado.getNacionalidad());
+
                 con.store(empleado);
 
             }
             con.close();
-            JOptionPane.showMessageDialog(null, "Insertado");
+            JOptionPane.showMessageDialog(null, "Actualizado");
 
         }
         catch (Exception e){
@@ -184,16 +215,19 @@ public class db4o {
         try{
 
             open();
+            Espectaculo espec = new Espectaculo();
+            espec.setId(espectaculo.getId());
 
-            ObjectSet result =  con.queryByExample(espectaculo);
+            ObjectSet result =  con.queryByExample(espec);
 
             if (result.hasNext()){
                 Espectaculo e = (Espectaculo) result.next();
-                con.store(espectaculo);
+                e.setEmpleado_cargo(espectaculo.getEmpleado_cargo());
+                con.store(e);
 
             }
             con.close();
-            JOptionPane.showMessageDialog(null, "Insertado");
+            JOptionPane.showMessageDialog(null, "Actualizado");
 
         }
         catch (Exception e){

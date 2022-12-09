@@ -7,8 +7,9 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import javax.swing.*;
-
 import com.db4o.ObjectSet;
+
+
 import com.mycompany.proyectonetbean.Clases.*;
 import com.mycompany.proyectonetbean.Clases.Espectaculo;
 import com.mycompany.proyectonetbean.DB.db4o;
@@ -378,23 +379,17 @@ public class ProyectoNetBean {
 
     }
     public static ArrayList<String> getBDdata(){
-        ArrayList<String> dataDb = null;
+        ArrayList<String> dataDb = new ArrayList<>();
         if(chosenDb.equals("DB4o")){
-            ObjectSet resultado = null;
-           resultado = db4o.selectParque(new Parque());
-           if (resultado.hasNext()){
-               Parque parque = (Parque) resultado.next();
+           Parque parque = db4o.selectParque(new Parque());
 
-
-               dataDb.add("parques");
+               dataDb.add("DB4o");
                dataDb.add(parque.getNombre());
                dataDb.add(parque.getApertura().toString());
                dataDb.add(parque.getDireccion());
                dataDb.add("-----");
                dataDb.add("C:\\xampp\\htdocs\\bd\\parques.yap");
                dataDb.add("----");
-
-           }
 
         }
         else{
@@ -719,5 +714,11 @@ public class ProyectoNetBean {
             }
         }
 
+    }
+
+    public static void insertParque() {
+        if (chosenDb == "DB4o"){
+            db4o.insertParque();
+        }
     }
 }
