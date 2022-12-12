@@ -15,7 +15,7 @@ public class H2 {
 
         try {
             //Connection conexion = DriverManager.getConnection("jdbc:h2:tcp://localhost/~/parques", "root","");
-            Connection conexion = DriverManager.getConnection("jdbc:h2:tcp://localhost/~/parques;DB_CLOSE_DELAY=-1", "sa","");
+            Connection conexion = DriverManager.getConnection("jdbc:h2:tcp://localhost/~/test;", "sa","");
             //System.out.println("Conectado a la base de datos");
             return conexion;
         } catch (SQLException e) {

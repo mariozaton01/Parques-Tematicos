@@ -167,7 +167,7 @@ public class db4o {
 
             Empleado emple = new Empleado();
             emple.setId(empleado.getId());
-            ObjectSet result =  con.queryByExample(empleado);
+            ObjectSet result =  con.queryByExample(emple);
 
             if (result.hasNext()){
                 Empleado e = (Empleado) result.next();
@@ -179,7 +179,7 @@ public class db4o {
                 e.setFecha_nac(empleado.getFecha_nac());
                 e.setNacionalidad(empleado.getNacionalidad());
 
-                con.store(empleado);
+                con.store(e);
 
             }
             con.close();
@@ -222,7 +222,18 @@ public class db4o {
 
             if (result.hasNext()){
                 Espectaculo e = (Espectaculo) result.next();
-                e.setEmpleado_cargo(espectaculo.getEmpleado_cargo());
+                /*if(e.getNombre().equals("")){
+
+                }
+                else{*/
+                    e.setEmpleado_cargo(espectaculo.getEmpleado_cargo());
+
+                    e.setCoste(espectaculo.getCoste());
+                    e.setNombre(espectaculo.getNombre());
+                    e.setAforo(espectaculo.getAforo());
+                    e.setDescripcion(espectaculo.getDescripcion());
+                    e.setLugar(espectaculo.getLugar());
+                //}
                 con.store(e);
 
             }
@@ -289,7 +300,7 @@ public class db4o {
     }
     public static Espectaculo selectEspectaculoById(Espectaculo espectaculo){
         try{
-            Espectaculo e = new Espectaculo();
+            Espectaculo e;
 
             open();
 
@@ -395,9 +406,9 @@ public class db4o {
             open();
 
             newCliente.setId(String.valueOf(id));
+            con.store(newCliente);
             id++;
 
-            con.store(newCliente);
             con.close();
 
         }

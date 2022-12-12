@@ -594,13 +594,19 @@ public class ProyectoNetBean {
             DefaultListModel model = new DefaultListModel();
             l_espectaculos.setModel(model);
 
-            for (RelacionEspectaculosClientes espectaculo : listaEspectaculos){
-                Espectaculo espec = new Espectaculo();
-                espec.setId(espectaculo.getId());
-                espec = db4o.selectEspectaculoById(espec);
-                model.addElement(espec.getId()+"-"+espec.getNombre());
+            if(listaEspectaculos.size() > 0){
+                for (RelacionEspectaculosClientes espectaculo : listaEspectaculos){
+                    Espectaculo espec = new Espectaculo();
+                    espec.setId(espectaculo.getId_espectaculo());
+                    Espectaculo e = db4o.selectEspectaculoById(espec);
+                    model.addElement(e.getId()+"-"+e.getNombre());
 
+                }
             }
+            else{
+                System.out.println("NO hay relacion");
+            }
+
 
 
         }
@@ -631,10 +637,10 @@ public class ProyectoNetBean {
         //todo
             Espectaculo espectaculo  =new Espectaculo();
             espectaculo.setEmpleado_cargo(id);
-            espectaculo = db4o.selectEspectaculoById(espectaculo);
+            Espectaculo e = db4o.selectEspectaculoById(espectaculo);
 
-            if(espectaculo != null){
-                text.setText(espectaculo.getNombre());
+            if(e != null){
+                text.setText(e.getNombre());
             }
             else{
                 text.setText("--Sin asignar--");
