@@ -46,6 +46,8 @@ public class Ventana_gestion extends javax.swing.JFrame {
         ver_empleados = new javax.swing.JMenuItem();
         m_emple_anadir = new javax.swing.JMenuItem();
         m_emple_borrar = new javax.swing.JMenuItem();
+        m_metadatos = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -151,6 +153,23 @@ public class Ventana_gestion extends javax.swing.JFrame {
         m_empleado.add(m_emple_borrar);
 
         jMenuBar1.add(m_empleado);
+
+        m_metadatos.setText("Metadatos");
+        m_metadatos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                m_metadatosActionPerformed(evt);
+            }
+        });
+
+        jMenuItem1.setText("Metadatos");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        m_metadatos.add(jMenuItem1);
+
+        jMenuBar1.add(m_metadatos);
 
         setJMenuBar(jMenuBar1);
 
@@ -276,6 +295,22 @@ public class Ventana_gestion extends javax.swing.JFrame {
         desktop.repaint();
     }//GEN-LAST:event_m_emple_borrarActionPerformed
 
+    private void m_metadatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_metadatosActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_m_metadatosActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        Show_metadatos show_metadatos = new Show_metadatos();
+        show_metadatos.setSize(1071,585);
+        show_metadatos.setLocation(0,0);
+        desktop.removeAll();
+        desktop.add(show_metadatos,BorderLayout.CENTER);
+        desktop.revalidate();
+        desktop.repaint();
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -328,6 +363,7 @@ public class Ventana_gestion extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem m_cliente_anadir;
     private javax.swing.JMenuItem m_cliente_borrar;
     private javax.swing.JMenuItem m_cliente_ver;
@@ -337,6 +373,7 @@ public class Ventana_gestion extends javax.swing.JFrame {
     private javax.swing.JMenuItem m_espec_anadir;
     private javax.swing.JMenuItem m_espec_borrar;
     private javax.swing.JMenuItem m_espec_disponibles;
+    private javax.swing.JMenu m_metadatos;
     private javax.swing.JMenu menu_Espectaculos;
     private javax.swing.JMenuItem ver_empleados;
     // End of variables declaration//GEN-END:variables

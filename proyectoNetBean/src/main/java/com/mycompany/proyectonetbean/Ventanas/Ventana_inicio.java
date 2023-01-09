@@ -149,8 +149,8 @@ public class Ventana_inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_b_warnerActionPerformed
 
     private void b_islaMagicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_islaMagicaActionPerformed
-        // TODO add your handling code here:
         ProyectoNetBean.chooseDB("DB4o");
+
         ProyectoNetBean.insertParque();
 
     }//GEN-LAST:event_b_islaMagicaActionPerformed

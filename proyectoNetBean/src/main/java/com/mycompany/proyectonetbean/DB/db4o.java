@@ -3,10 +3,13 @@ package com.mycompany.proyectonetbean.DB;
 import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
+import com.db4o.ext.*;
 import com.mycompany.proyectonetbean.Clases.*;
 
 import javax.swing.*;
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 public class db4o {
@@ -111,18 +114,56 @@ public class db4o {
     public static void insertParque(){
         try{
 
-            open();
-            Parque p  = new Parque();
-            p.setNombre("Isla Magica");
-            p.setAforo(100);
-            p.setApertura(new Date());
-            p.setDireccion("Direccion parque db4o");
-            con.store(p);
-            con.close();
+            File f = new File("parques.db4o");
+            if(!f.isFile()){
+                open();
+
+                Parque p  = new Parque();
+                p.setNombre("Isla Magica");
+                p.setAforo(100);
+                p.setApertura(new Date());
+                p.setDireccion("Direccion parque db4o");
+                con.store(p);
+                con.close();
+            }
+
+            ArrayList<Cliente> clientes = selectClientes(new Cliente());
+            ArrayList<Empleado> empleados = selectEmpleados(new Empleado());
+            ArrayList<Espectaculo> espectaculos = selectEspectaculos(new Espectaculo());
+
+            int idCliente = 0;
+            int idEmpleado = 0;
+            int idEspectaculo = 0;
+            for (Cliente c : clientes){
+                if(Integer.parseInt(c.getId()) > idCliente){
+                    idCliente = Integer.parseInt(c.getId());
+                }
+            }
+
+            for (Espectaculo e : espectaculos){
+                if(Integer.parseInt(e.getId()) > idEspectaculo){
+                    idEspectaculo= Integer.parseInt(e.getId());
+
+                }
+            }
+            for (Empleado em : empleados){
+                if(Integer.parseInt(em.getId()) > idEmpleado){
+                    idEmpleado = Integer.parseInt(em.getId());
+
+                }
+            }
+
+            int listaIds[] = {idCliente, idEmpleado, idEspectaculo};
+            Arrays.sort(listaIds);
+            System.out.println(listaIds[0]);
+            System.out.println(listaIds[1]);
+            System.out.println(listaIds[2]);
+            id = listaIds[2]+1;
+            System.out.println(id);
 
         }
         catch (Exception e){
-            JOptionPane.showMessageDialog(null, "parques.db4o");
+            JOptionPane.showMessageDialog(null, e.getMessage());
 
         }
 
@@ -432,5 +473,33 @@ public class db4o {
         }
         con.close();
         return  rel;
+    }
+    public static void metadatos(JTextArea textarea){
+        open();
+        String texto = "";
+        SystemInfo identity = con.ext().systemInfo();
+
+        //System.out.println("INFO: " + identity.totalSize());
+        texto += "\nMAX SIZE: " +identity.totalSize();
+
+
+        StoredClass[] classes = con.ext().storedClasses();
+
+        for (StoredClass clase: classes)
+        {
+            //System.out.println(clase.getName());
+            texto += "\nCLASE: " + clase.getName();
+
+            for(StoredField field : clase.getStoredFields())
+            {
+                texto += "\nCOLUMNA: " + field.getName() +"--- TIPO: " + field.getStoredType().getName();
+                //System.out.println( field.getName()+" --" + field.getStoredType().getName());
+            }
+        }
+        textarea.setText(texto);
+
+        con.close();
+
+
     }
 }

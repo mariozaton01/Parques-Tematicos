@@ -1,6 +1,7 @@
 
 package com.mycompany.proyectonetbean;
 
+import java.io.File;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -726,5 +727,17 @@ public class ProyectoNetBean {
         if (chosenDb == "DB4o"){
             db4o.insertParque();
         }
+    }
+
+    public static void showMetadatos(JTextArea textarea) {
+        if(chosenDb.equals("DB4o")) {
+            db4o.metadatos(textarea);
+
+        }
+        else{
+            Db.metadatos(chosenDb, textarea);
+
+        }
+
     }
 }

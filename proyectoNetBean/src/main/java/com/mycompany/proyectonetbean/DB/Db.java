@@ -2,8 +2,6 @@ package com.mycompany.proyectonetbean.DB;
 
 
 
-import org.h2.jdbc.*;
-
 import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
@@ -144,6 +142,107 @@ public class Db {
         }
         return datosBd;
 
+    }
+
+    public static void metadatos(String bd, JTextArea textarea){
+        Connection conexion = null;
+        String catalog = "";
+        if (bd.equalsIgnoreCase("H2")) {
+            conexion = H2.conectar();
+            catalog = "PARQUES";
+        } else if (bd.equalsIgnoreCase("MySQL")) {
+            conexion = MySQL.conectar();
+            catalog = "parques";
+
+        }
+        String texto = "";
+
+        try {
+            DatabaseMetaData dbmd = conexion.getMetaData();
+            ResultSet rs = null;
+
+            //Nombre de esquema
+            rs = dbmd.getSchemas();
+
+            while (rs.next()) {
+                texto += "\nEsquema: " + rs.getString(1);
+                //get schemas no saca nada.
+
+            }
+            texto += "\nEsquema: parques\n-------------------";
+
+            //Nombres de tabla
+
+            rs = dbmd.getTables(catalog,null,null,null);
+            ArrayList<String> tablas = new ArrayList<>();
+            while (rs.next()) {
+                if(rs.getString(3).toLowerCase().equals("clientes") || rs.getString(3).toLowerCase().equals("empleados") || rs.getString(3).toLowerCase().equals("espectaculos") ||
+                        rs.getString(3).toLowerCase().equals("espectaculo_cliente") || rs.getString(3).toLowerCase().equals("parque") ){
+                    texto += "\nTabla: " + rs.getString(3);
+                    tablas.add(rs.getString(3));
+
+                }
+            }
+
+            //Nombres de columnas
+           // rs = dbmd.getColumns("parques", null, null, null);
+           /* rs = dbmd.getColumns(catalog, null, null, null);
+
+            while (rs.next()) {
+                //Invalid value null for parameter "table" exception
+                try {
+
+                    texto += "\nColumna: " + rs.getString(4);
+
+                } catch (Exception e) {
+                    System.out.println("Error al obtener el nombre de la columna");
+                }
+            }*/
+            //Cual es la clave primaria de cada tabla
+            for (String tabla : tablas) {
+                rs = dbmd.getPrimaryKeys(catalog, null, tabla);
+                while (rs.next()) {
+                    try{
+                        texto += "\nClave primaria de " + tabla + ": " + rs.getString(4);
+                    }
+                    catch (Exception e){
+                        System.out.println("Error al obtener claves primarias: " + e.getMessage());
+
+                    }
+
+                }
+            }
+            texto += "\n-------------------------------";
+
+            //Por cada tabla, mostrar sus columnas
+            //rs = dbmd.getTables("parques", null, null, null);
+            for (String tabla : tablas) {
+                rs = dbmd.getTables(catalog, null, tabla, null);
+                while (rs.next()) {
+                    texto += "\nTabla: " + rs.getString(3);
+                    //ResultSet rs2 = dbmd.getColumns("parques", null, rs.getString(3), null);
+                    ResultSet rs2 = dbmd.getColumns(catalog, null, rs.getString(3), null);
+                    while (rs2.next()) {
+
+                        texto += "\nColumna: " + rs2.getString(4);
+
+                        //Tipo
+                        texto += "\nTipo: " + rs2.getString(6);
+
+                        //Tamaño
+                        texto +=  "\nTamaño: " + rs2.getString(7);
+
+                        //Nulo
+                        texto +=  "\nNulo: " + rs2.getString(18);
+                    }
+                }
+            }
+
+            textarea.setText(texto);
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
 

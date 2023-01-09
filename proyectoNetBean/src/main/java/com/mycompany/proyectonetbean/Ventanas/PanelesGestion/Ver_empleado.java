@@ -31,9 +31,6 @@ public class Ver_empleado extends javax.swing.JPanel {
     public Ver_empleado() {
         initComponents();
         ProyectoNetBean.getEmpleadostoComboBox(cb_emple);
-
-
-
     }
 
     /**
@@ -344,6 +341,7 @@ public class Ver_empleado extends javax.swing.JPanel {
             Empleado emple = ProyectoNetBean.getEmpleadoByID(id);
 
             t_name.setText(emple.getNombre());
+            t_dni.setText(emple.getDni());
             t_apellido.setText(emple.getApellido());
             c_fecha_nac.setDate(emple.getFecha_nac());
             c_fecha_contrato.setDate(emple.getFecha_contrato());
@@ -353,6 +351,7 @@ public class Ver_empleado extends javax.swing.JPanel {
 
             b_update_emple.setEnabled(false);
 
+            t_dni.setEnabled(false);
             t_name.setEnabled(false);
             t_apellido.setEnabled(false);
             c_fecha_nac.setEnabled(false);
